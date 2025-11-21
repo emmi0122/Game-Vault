@@ -1,5 +1,8 @@
 package se.yrgo.domain;
 
+import java.time.LocalDateTime;
+
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,10 +11,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String email;
-    private String password;
 
+    @Column(unique = true)
+    private String email;
+    private String realName;
+    private String password;
+    
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")
+    private Profile userProfile;
+    
+    private LocalDateTime createdAt;
+    
     public User() {
     }
 
@@ -23,20 +35,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getPassword() {
@@ -47,9 +59,23 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", name=" + name + ", email=" + email + "]";
+    public Profile getUserProfile() {
+        return userProfile;
     }
+
+    public void setUserProfile(Profile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+   
+
 
 }
