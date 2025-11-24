@@ -32,7 +32,7 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                     "status", "error",
-                    "message", "Username already exists"));
+                    "message", "User with that email already exists"));
         }
     }
 
@@ -45,8 +45,7 @@ public class UserController {
         if (findUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), findUser.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                     "status", "error",
-                    "message", "Invalid username or password",
-                    "user", findUser.get()));
+                    "message", "Invalid username or password"));
         }
 
 
@@ -62,7 +61,7 @@ public class UserController {
         return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "message", "User logged in successfully",
-//                "profile", dbUser.getUserProfile(),
+            //     "profile", dbUser.getUserProfile(),
                 "userId", dbUser.getId()));
     }
 
