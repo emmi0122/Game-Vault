@@ -5,17 +5,20 @@ import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
 
+
 @Entity
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private Long userId;
+    @Column(nullable = false)
     private Long gameId;
     private int rating;
+    @Column(nullable = false)
     private String text;
     private Instant createdAt;
-    private Instant updatedAt;
 
     @OneToMany(mappedBy = "review")
     private List<ReviewLikes> likes;
@@ -24,10 +27,6 @@ public class Review {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUserId() {
@@ -68,13 +67,5 @@ public class Review {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
