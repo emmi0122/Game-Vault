@@ -2,28 +2,24 @@ package se.yrgo.domain;
 
 import java.time.LocalDateTime;
 
-
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "UserEntity")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String email;
-    private String realName;
     private String password;
-    
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id")
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Profile userProfile;
-    
+
     private LocalDateTime createdAt;
-    
+
     public User() {
     }
 
@@ -43,14 +39,6 @@ public class User {
         this.email = email;
     }
 
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -63,8 +51,11 @@ public class User {
         return userProfile;
     }
 
-    public void setUserProfile(Profile userProfile) {
-        this.userProfile = userProfile;
+    public void setUserProfile(Profile profile) {
+        this.userProfile = profile;
+        if (profile != null) {
+            profile.setUser(this); // 🔥 Viktigt för bidirectional!
+        }
     }
 
     public LocalDateTime getCreatedAt() {
@@ -74,8 +65,5 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-   
-
 
 }

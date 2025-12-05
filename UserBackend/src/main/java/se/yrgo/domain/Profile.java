@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Profile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // auth like (user, admin)
@@ -20,39 +20,69 @@ public class Profile {
 
     @Column(unique = true)
     private String profileName;
+    private String realName;
+
     private String avatarURL; // image
     // Later when games has genger
     // private List<String> favoriteGenres;
-    
-    
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Profile() {
     }
-    
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public List<String> getRoles() {
         return roles;
     }
+
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
+
     public String getProfileName() {
         return profileName;
     }
+
     public void setProfileName(String profileName) {
         this.profileName = profileName;
     }
+
     public String getAvatarURL() {
         return avatarURL;
     }
+
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
     }
 
+    public String getRealName() {
+        return realName;
+    }
 
-    
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        if (user != null && user.getUserProfile() != this) {
+            user.setUserProfile(this);
+        }
+    }
+
 }

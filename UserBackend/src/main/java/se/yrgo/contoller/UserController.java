@@ -1,4 +1,4 @@
-package se.yrgo.rest;
+package se.yrgo.contoller;
 
 import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -6,30 +6,44 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-import se.yrgo.service.UserService;
-import se.yrgo.domain.User;
+
+import se.yrgo.service.UserServiceImpl;
+import se.yrgo.domain.*;
+import se.yrgo.dto.RegistrationRequestDTO;
 
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private UserServiceImpl userService;
     private PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegistrationRequestDTO requestDTO) {
         // if user excist
         try {
-            userService.registerUser(user);
+            //validate user
+            //validate profile
+            //if valid do transaction
+            User user = userService.registerUserWithProfile(requestDTO.getUser(), requestDTO.getProfile());
+
             return ResponseEntity.ok(Map.of(
                     "status", "success",
-                    "message", "User registered successfully"));
+                    "message", "User registered successfully",
+                    "userId", user.getId().toString()));
         } catch (Exception e) {
+
+            System.err.print(e.getMessage());
+            System.err.println(e.getCause());
+            e.printStackTrace();
+
             return ResponseEntity.badRequest().body(Map.of(
                     "status", "error",
                     "message", "User with that email already exists"));
@@ -44,10 +58,9 @@ public class UserController {
         // Kontrollera om användaren finns och lösenordet matchar
         if (findUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), findUser.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                    "status", "error",
+                    "status", "faild",
                     "message", "Invalid username or password"));
         }
-
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 dbUser.getId(),
@@ -61,13 +74,8 @@ public class UserController {
         return ResponseEntity.ok(Map.of(
                 "status", "success",
                 "message", "User logged in successfully",
-            //     "profile", dbUser.getUserProfile(),
-                "userId", dbUser.getId()));
-    }
-
-    @GetMapping("/protected")
-    public String authController() {
-        return "Du är autentiserad och har nått en skyddad resurs!";
+                // "profile", dbUser.getUserProfile(),
+                "proflieId", dbUser.getUserProfile().getId()));
     }
 
     @GetMapping("/csrf")

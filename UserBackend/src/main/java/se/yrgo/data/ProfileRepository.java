@@ -1,4 +1,4 @@
-package se.yrgo.repository;
+package se.yrgo.data;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.*;
@@ -7,5 +7,4 @@ import se.yrgo.domain.*;
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Optional<Profile> findProfileByUserId(Long userId);
 }

@@ -6,10 +6,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import se.yrgo.repository.UserRepository;
+import se.yrgo.data.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -44,34 +45,68 @@ public class SecurityConfig {
 	// .userDetailsService(userDetailsService)
 	// .build();
 	// }
+
+	// @Bean
+	// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
+	// Exception {
+	// http
+	// .authorizeHttpRequests(authorize -> authorize
+	// .requestMatchers("/register", "/login", "/h2-console/**").permitAll()
+	// .anyRequest().authenticated())
+	// .formLogin(withDefaults())
+	// .httpBasic(withDefaults());
+
+	// // Enable CSRF protection, but specifically ignore it for the H2 console
+	// http.csrf(csrf -> csrf
+	// .ignoringRequestMatchers("/h2-console/") // Ignore CSRF for H2 console only
+	// );
+
+	// // Allow the H2 console to be displayed in a frame
+	// http.headers(headers -> headers
+	// .frameOptions(frameOptions -> frameOptions.sameOrigin()));
+
+	// return http.build();
+	// }
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/register", "/login", "/h2-console/**").permitAll()
+						.requestMatchers("/user/register", "/user/login", "/profile/getProfile", "/h2-console/**").permitAll()
 						.anyRequest().authenticated())
 				.csrf(csrf -> csrf.disable()) // CSRF off för Insomnia
 				.headers(headers -> headers.frameOptions().disable()) // H2 console
-				.httpBasic(basic -> basic.disable())
 				.formLogin(form -> form.disable())
+				.httpBasic(withDefaults())
 				.build();
 	}
 
 	// Database-backed users
-	@Bean
-	public UserDetailsService userDetailsService(UserRepository userRepository) {
-		return email -> userRepository.findUserByEmail(email)
-				.map(user -> {
-					List<String> roles = user.getUserProfile().getRoles();
-					String[] rolesArray = roles.toArray(new String[0]);
+	// @Bean
+	// public UserDetailsService userDetailsService(UserRepository userRepository) {
+	// return email -> userRepository.findUserByEmail(email)
+	// .map(user -> {
+	// List<String> roles = user.getUserProfile().getRoles();
+	// String[] rolesArray = roles.toArray(new String[0]);
 
-					return org.springframework.security.core.userdetails.User
-							.withUsername(user.getEmail())
-							.password(user.getPassword())
-							.roles(rolesArray)
-							.build();
-				})
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+	// return org.springframework.security.core.userdetails.User
+	// .withUsername(user.getEmail())
+	// .password(user.getPassword())
+	// .roles(rolesArray)
+	// .build();
+	// })
+	// .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+	// }
+
+	// @Bean
+	// public UserDetailsService userDetailsService() {
+	// UserDetails user = User.builder()
+	// .username()
+	// .password(user.getPassword()) // In production, use a secure password encoder
+	// .roles("USER")
+	// .build();
+
+	// return new InMemoryUserDetailsManager(user);
+	// }
 
 }
