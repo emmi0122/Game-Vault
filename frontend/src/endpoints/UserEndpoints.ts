@@ -1,13 +1,12 @@
 import type { RegistrationRequestDTO } from "../interfaces/Typer";
 
-const baseURL = "http://localhost:8080/";
-
-
+const baseURL = "http://localhost:8080";
+const mapping = "/user";
 
 export async function registerUser(registrationData: RegistrationRequestDTO): Promise<{[key: string]: string} | undefined> {
   try {
     console.log(registrationData)
-    const response = await fetch(baseURL + "register", {
+    const response = await fetch(baseURL + mapping +"/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registrationData)

@@ -9,6 +9,7 @@ export default function CreateAccount() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [realName, setRealName] = useState("");
     const [avatar, setAvatar] = useState<string>(generateAvatar);
     const [message, setMessage] = useState<string>("");
 
@@ -54,8 +55,16 @@ export default function CreateAccount() {
         }
 
         const registrationData: RegistrationRequestDTO = {
-            user: { email, realName: username, password },
-            profile: { profileName: username, avatarURL: avatar, roles: ["USER"] }
+            user: {
+                email: email,
+                password: password
+            },
+            profile: {
+                profileName: username,
+                realName: realName,
+                avatarURL: avatar,
+                roles: ["USER"]
+            }
         };
 
         try {
@@ -63,7 +72,7 @@ export default function CreateAccount() {
             console.log("Response from registerUser:", user);
 
             if (user?.userId) {
-                localStorage.setItem("userId", user.userId);
+                localStorage.setItem("proflieId", user.userId);
                 setMessage("Registration successful!");
             } else if (user?.message) {
                 setMessage(`Registration failed: ${user.message}`);
@@ -89,6 +98,16 @@ export default function CreateAccount() {
                     name="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
+                    required
+                />
+                
+                <label htmlFor="real-name"><b>Your real name</b></label>
+                <input
+                    type="text"
+                    placeholder="Enter Name"
+                    name="real-name"
+                    value={realName}
+                    onChange={e => setRealName(e.target.value)}
                     required
                 />
 
@@ -133,13 +152,13 @@ export default function CreateAccount() {
             </div>
 
             <div className="container">
-                <button 
-                type="button" 
-                className="cancelbtn"
-                onClick={handleCancel}
-            >
-                Cancel
-            </button>
+                <button
+                    type="button"
+                    className="cancelbtn"
+                    onClick={handleCancel}
+                >
+                    Cancel
+                </button>
 
                 <span className="psw">Already have an account? <Link to={'/login'} >Log in</Link></span>
             </div>

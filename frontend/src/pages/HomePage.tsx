@@ -6,7 +6,7 @@ export default function HomePage() {
     const [userId, setUserId] = useState<String|null>("");
     
     useEffect(() =>{
-        const stordeUserId = localStorage.getItem("userId");
+        const stordeUserId = localStorage.getItem("proflieId");
 
         if(stordeUserId !== null){
             setUserId(stordeUserId);
@@ -14,12 +14,18 @@ export default function HomePage() {
 
     }, []);
 
+    function logUt(){
+        localStorage.setItem("proflieId", "");
+        setUserId("")
+    }
+
     return (
         <>
             <p>Hello user: {userId}</p>
 
             <span className="psw"><Link to={'/login'} >Log In</Link></span>
             <span className="psw"><Link to={'/create'} >Sign in</Link></span>
+            <button onClick={logUt}>Log out</button>
         </>
     );
 }
