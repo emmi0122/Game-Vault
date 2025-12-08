@@ -71,8 +71,8 @@ export default function CreateAccount() {
             const user = await registerUser(registrationData);
             console.log("Response from registerUser:", user);
 
-            if (user?.userId) {
-                localStorage.setItem("proflieId", user.userId);
+            if (user?.proflieId) {
+                localStorage.setItem("proflieId", user.proflieId);
                 setMessage("Registration successful!");
             } else if (user?.message) {
                 setMessage(`Registration failed: ${user.message}`);

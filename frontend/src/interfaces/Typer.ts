@@ -14,3 +14,9 @@ export interface RegistrationRequestDTO {
   user: User;
   profile: Profile;
 }
+
+export interface LoginResponse {
+  status: string;
+  message: string;
+  profileId?: number;  // optional if fail
+}
