@@ -29,15 +29,15 @@ public class UserController {
     public ResponseEntity<Map<String, String>> register(@RequestBody RegistrationRequestDTO requestDTO) {
         // if user excist
         try {
-            //validate user
-            //validate profile
-            //if valid do transaction
+            // validate user
+            // validate profile
+            // if valid do transaction
             User user = userService.registerUserWithProfile(requestDTO.getUser(), requestDTO.getProfile());
 
             return ResponseEntity.ok(Map.of(
                     "status", "success",
                     "message", "User registered successfully",
-                    "userId", user.getId().toString()));
+                    "proflieId", user.getUserProfile().getId().toString()));
         } catch (Exception e) {
 
             System.err.print(e.getMessage());
@@ -53,7 +53,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         Optional<User> findUser = userService.findUserByEmail(user.getEmail());
-        User dbUser = findUser.get();
 
         // Kontrollera om användaren finns och lösenordet matchar
         if (findUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), findUser.get().getPassword())) {
@@ -62,6 +61,7 @@ public class UserController {
                     "message", "Invalid username or password"));
         }
 
+        User dbUser = findUser.get();
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 dbUser.getId(),
                 null, // no past-one password
