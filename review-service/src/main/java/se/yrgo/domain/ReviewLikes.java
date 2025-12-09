@@ -9,7 +9,7 @@ public class ReviewLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long userId;
+    private Long profileId;
     private Instant likedAt;
 
     @ManyToOne
@@ -26,12 +26,12 @@ public class ReviewLikes {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getProfileId() {
+        return profileId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setProfileId(Long userId) {
+        this.profileId = userId;
     }
 
     public Instant getLikedAt() {

@@ -1,7 +1,6 @@
 package se.yrgo.service.review;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import se.yrgo.data.ReviewRepository;
 import se.yrgo.domain.Review;
 import se.yrgo.exception.ReviewCreationException;

@@ -3,6 +3,7 @@ package se.yrgo.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.domain.Review;
 import se.yrgo.exception.ReviewNotFoundException;
@@ -14,9 +15,11 @@ import java.util.List;
 @RequestMapping("/reviews")
 public class ReviewRestController {
     private final ReviewService reviewService;
+    private RestClient restClient;
 
-    public ReviewRestController(ReviewService reviewService) {
+    public ReviewRestController(ReviewService reviewService, RestClient restclient) {
         this.reviewService = reviewService;
+        this.restClient = restclient;
     }
 
     @PostMapping("/review")

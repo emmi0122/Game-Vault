@@ -12,7 +12,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
-    private Long userId;
+    private Long profileId;
     @Column(nullable = false)
     private Long gameId;
     private int rating;
@@ -20,7 +20,7 @@ public class Review {
     private String text;
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewLikes> likes;
 
     public Review() {};
@@ -29,12 +29,12 @@ public class Review {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getProfileId() {
+        return profileId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setProfileId(Long userId) {
+        this.profileId = userId;
     }
 
     public Long getGameId() {
