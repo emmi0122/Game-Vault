@@ -29,19 +29,20 @@ export async function registerUser(registrationData: RegistrationRequestDTO): Pr
 }
 
 export async function login(user: User): Promise<LoginResponse> {
-  const response = await fetch("http://localhost:8080/login", {
+  console.log("test1: "+ user)
+  const response = await fetch(baseURL + mapping +"/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
+    // credentials: "include"
   });
+  console.log(response)
+  
 
   if (!response.ok) {
     // Extract backend error message
     const errorData = await response.json();
-    return {
-      status: "failed",
-      message: errorData.message || "Login failed"
-    };
+    return errorData;
   }
 
   return await response.json(); // returns LoginResponse

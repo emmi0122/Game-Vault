@@ -45,7 +45,7 @@ export default function CreateAccount() {
 
     async function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
-        setMessage("");
+        setMessage("waiting");
         console.log("Submitting form...");
 
         if (password !== confirmPassword) {
@@ -71,8 +71,8 @@ export default function CreateAccount() {
             const user = await registerUser(registrationData);
             console.log("Response from registerUser:", user);
 
-            if (user?.proflieId) {
-                localStorage.setItem("proflieId", user.proflieId);
+            if (user?.profileId) {
+                localStorage.setItem("profileId", String(user.profileId));
                 setMessage("Registration successful!");
             } else if (user?.message) {
                 setMessage(`Registration failed: ${user.message}`);

@@ -9,8 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
 
 import se.yrgo.data.UserRepository;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -71,6 +74,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
+				.cors(withDefaults())
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/user/register", "/user/login", "/profile/getProfile", "/h2-console/**").permitAll()
 						.anyRequest().authenticated())
@@ -80,6 +84,21 @@ public class SecurityConfig {
 				.httpBasic(withDefaults())
 				.build();
 	}
+
+	@Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);                // Tillåter cookies/sessioner
+        config.addAllowedOrigin("http://localhost:5173"); // Din frontend
+        config.addAllowedHeader("*");                    // Tillåt alla headers (Content-Type, Authorization etc.)
+        config.addAllowedMethod("*");                    // GET, POST, OPTIONS etc.
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
 
 	// Database-backed users
 	// @Bean

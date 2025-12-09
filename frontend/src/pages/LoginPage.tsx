@@ -12,8 +12,7 @@ export default function LoginPage() {
 
 
     const navigate = useNavigate();
-
-    const handleCancel = () => {
+    const toHomePage = () => {
         navigate("/");
     };
 
@@ -37,7 +36,7 @@ export default function LoginPage() {
             const data = await login(user);
             console.log("Response from login:", data);
 
-            if (data.status === "success") {
+            if (data?.profileId) {
                 localStorage.setItem("profileId", String(data.profileId));
                 setMessage("Login successful!");
             } else {
@@ -63,14 +62,14 @@ export default function LoginPage() {
                     <input type="password" placeholder="Enter Password" name="psw" value={password} onChange={e => setPassword(e.target.value)} required />
 
                     <button type="submit">Sign In</button>
-                    <p></p>
+                    <p>{message}</p>
                 </div>
 
                 <div className="container">
                     <button
                         type="button"
                         className="cancelbtn"
-                        onClick={handleCancel}
+                        onClick={toHomePage}
                     >
                         Cancel
                     </button>

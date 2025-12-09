@@ -37,7 +37,7 @@ public class UserController {
             return ResponseEntity.ok(Map.of(
                     "status", "success",
                     "message", "User registered successfully",
-                    "proflieId", user.getUserProfile().getId().toString()));
+                    "profileId", user.getUserProfile().getId().toString()));
         } catch (Exception e) {
 
             System.err.print(e.getMessage());
@@ -57,7 +57,7 @@ public class UserController {
         // Kontrollera om användaren finns och lösenordet matchar
         if (findUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), findUser.get().getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                    "status", "faild",
+                    "status", "failed",
                     "message", "Invalid username or password"));
         }
 
@@ -75,7 +75,7 @@ public class UserController {
                 "status", "success",
                 "message", "User logged in successfully",
                 // "profile", dbUser.getUserProfile(),
-                "proflieId", dbUser.getUserProfile().getId()));
+                "profileId", dbUser.getUserProfile().getId()));
     }
 
     @GetMapping("/csrf")
