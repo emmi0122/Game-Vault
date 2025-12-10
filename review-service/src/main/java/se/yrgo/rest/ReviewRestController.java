@@ -16,6 +16,7 @@ import java.util.List;
 public class ReviewRestController {
     private final ReviewService reviewService;
     private RestClient restClient;
+    @
 
     public ReviewRestController(ReviewService reviewService, RestClient restclient) {
         this.reviewService = reviewService;
@@ -30,6 +31,11 @@ public class ReviewRestController {
         } catch (ReviewCreationException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/all-reviews")
+    public List<Review> getAllReviewForGame(@RequestParam Long gameId) {
+        return reviewService.findAllReviewsForGame(gameId);
     }
 
     @GetMapping("/all-reviews")

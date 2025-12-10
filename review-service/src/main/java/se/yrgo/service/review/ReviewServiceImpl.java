@@ -1,8 +1,13 @@
 package se.yrgo.service.review;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import se.yrgo.data.ReviewRepository;
 import se.yrgo.domain.Review;
+import se.yrgo.dto.ProfileDTO;
+import se.yrgo.dto.ReviewResponseDTO;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.exception.ReviewNotFoundException;
 
@@ -12,15 +17,28 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepo;
+    private final RestClient restClient;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepo) {
+    @Value("${profile.service.url}")
+    private String profileServiceUrl;
+
+    public ReviewServiceImpl(ReviewRepository reviewRepo, RestClient restClient) {
         this.reviewRepo = reviewRepo;
+        this.restClient = restClient;
     }
 
     @Override
     public void createReview(Review review) {
         try {
-            reviewRepo.save(review);
+            ProfileDTO profile = restClient.get()
+                    .uri(profileServiceUrl + "/getProfile" + review.getProfileId())
+                    .retrieve()
+                    .body(ProfileDTO.class);
+
+            if (profile == null) {
+                throw new RuntimeException();
+            }
+
         } catch (Exception e) {
             throw new ReviewCreationException("Could not create review", e);
         }
@@ -43,7 +61,22 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllReviewsForGame(Long gameId) {
-        return reviewRepo.findAllReviewsForGame(gameId);
+    public List<ReviewResponseDTO> findAllReviewsForGame(Long gameId) {
+        List<Review> reviews = reviewRepo.findAllReviewsForGame(gameId);
+
+        return reviews.stream().map(review -> {
+            ProfileDTO profile = restClient.get()
+                    .uri(profileServiceUrl + "/getProfile" + review.getProfileId())
+                    .retrieve()
+                    .body(ProfileDTO.class);
+
+            return new ReviewResponseDTO(
+                    review.getId(),
+                    review.getRating(),
+                    review.getText(),
+                    review.getCreatedAt(),
+                    profile.getProfileName()
+            );
+        }).toList();
     }
 }
