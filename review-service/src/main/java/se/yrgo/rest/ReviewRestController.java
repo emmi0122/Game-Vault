@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
+import se.yrgo.dto.ReviewResponseDTO;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.domain.Review;
 import se.yrgo.exception.ReviewNotFoundException;
@@ -34,12 +35,7 @@ public class ReviewRestController {
     }
 
     @GetMapping("/all-reviews")
-    public List<Review> getAllReviewForGame(@RequestParam Long gameId) {
-        return reviewService.findAllReviewsForGame(gameId);
-    }
-
-    @GetMapping("/all-reviews")
-    public List<Review> getAllReviewForGame(@RequestParam Long gameId) {
+    public List<ReviewResponseDTO> getAllReviewForGame(@RequestParam Long gameId) {
         return reviewService.findAllReviewsForGame(gameId);
     }
 
