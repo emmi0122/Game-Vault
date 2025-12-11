@@ -16,12 +16,10 @@ import java.util.List;
 @RequestMapping("/reviews")
 public class ReviewRestController {
     private final ReviewService reviewService;
-    private RestClient restClient;
 
 
-    public ReviewRestController(ReviewService reviewService, RestClient restclient) {
+    public ReviewRestController(ReviewService reviewService) {
         this.reviewService = reviewService;
-        this.restClient = restclient;
     }
 
     @PostMapping("/review")
@@ -47,5 +45,10 @@ public class ReviewRestController {
         } catch(ReviewNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
         }
+    }
+
+    @GetMapping("/profile-reviews")
+    public List<Review> getAllReviewsForProfile(@RequestParam Long profileId) {
+        return reviewService.findAllReviewsForProfile(profileId);
     }
 }

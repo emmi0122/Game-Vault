@@ -11,4 +11,5 @@ public interface ReviewService {
     void updateReview(Review review);
     void deleteReview(Long reviewId);
     List<ReviewResponseDTO> findAllReviewsForGame(Long gameId);
+    List<Review> findAllReviewsForProfile(Long profileId);
 }
