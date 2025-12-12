@@ -40,3 +40,18 @@
         font-size: smaller;
     }
 }
+
+.create-review-container {
+
+    div > input {
+       margin-top: 10px;
+    }
+    div > label {
+        font-size: small;
+        margin-right: 10px;
+    }
+
+    div > label > input {
+        margin-right: 5px;
+            }
+}
