@@ -1,7 +1,6 @@
 package se.yrgo.service.review;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import se.yrgo.data.ReviewRepository;
@@ -13,7 +12,6 @@ import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.exception.ReviewNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -45,18 +43,14 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    // TODO: This doesn't work for now.
     @Override
-    public void updateReview(Review review) {
-        Optional<Review> review1 = reviewRepo.findById(review.getId());
-        if (review1.isPresent()) {
-            review1.ifPresent(value -> value.setText(review.getText()));
-            review1.ifPresent(value -> value.setRating(review.getRating()));
-            reviewRepo.save(review1.get());
-        }
+    public void updateReview(Long id, Review oldReview) {
+        Review existing = reviewRepo.findById(id).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
+        existing.setRating(oldReview.getRating());
+        existing.setText(oldReview.getText());
+        reviewRepo.save(existing);
     }
 
-    // TODO: Check if this works
     @Override
     public void deleteReview(Long reviewId) {
             Review foundReview = reviewRepo.findById(reviewId).orElseThrow(() -> (new ReviewNotFoundException("No review found" + reviewId)));

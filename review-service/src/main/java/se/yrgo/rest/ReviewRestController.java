@@ -11,6 +11,7 @@ import se.yrgo.exception.ReviewNotFoundException;
 import se.yrgo.service.review.ReviewService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/reviews")
@@ -45,6 +46,13 @@ public class ReviewRestController {
         } catch(ReviewNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
         }
+    }
+
+    // TODO: Should this return the updated review or should the frontend get all reviews again?
+    @PostMapping("/update")
+    public ResponseEntity<String> updateReview(@RequestParam Long id, @RequestBody Review review) {
+        reviewService.updateReview(id, review);
+        return ResponseEntity.ok("Review updated");
     }
 
     @GetMapping("/profile-reviews")
