@@ -1,6 +1,5 @@
 package se.yrgo.service.review;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import se.yrgo.domain.Review;
 import se.yrgo.dto.ReviewResponseDTO;
 

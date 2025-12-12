@@ -34,8 +34,8 @@ public class ReviewServiceImpl implements ReviewService {
                     .retrieve()
                     .body(ProfileResponseDTO.class);
 
-            if (response.profile() == null) {
-                throw new RuntimeException();
+            if (response == null) {
+                throw new RuntimeException("Couldn't find profile");
             }
             reviewRepo.save(review);
         } catch (Exception e) {
@@ -66,6 +66,10 @@ public class ReviewServiceImpl implements ReviewService {
                     .uri(profileServiceUrl + "/getProfile?profileId=" + review.getProfileId())
                     .retrieve()
                     .body(ProfileResponseDTO.class);
+
+            if(response == null) {
+                throw new RuntimeException("Couldn't find profile");
+            }
 
             ProfileDTO profile = response.profile();
 
