@@ -38,7 +38,7 @@ export default function LoginPage() {
 
             if (data?.profileId) {
                 localStorage.setItem("profileId", String(data.profileId));
-                setMessage("Login successful!");
+                toHomePage();
             } else {
                 setMessage(`Login failed: ${data.message}`);
             }
