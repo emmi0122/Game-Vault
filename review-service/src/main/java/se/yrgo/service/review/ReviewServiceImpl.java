@@ -11,6 +11,7 @@ import se.yrgo.dto.ReviewResponseDTO;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.exception.ReviewNotFoundException;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -37,6 +38,7 @@ public class ReviewServiceImpl implements ReviewService {
             if (response == null) {
                 throw new RuntimeException("Couldn't find profile");
             }
+            review.setCreatedAt(Instant.now());
             reviewRepo.save(review);
         } catch (Exception e) {
             throw new ReviewCreationException("Could not create review", e);

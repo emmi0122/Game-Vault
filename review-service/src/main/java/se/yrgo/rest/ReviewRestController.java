@@ -12,6 +12,7 @@ import se.yrgo.service.review.ReviewService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/reviews")
 public class ReviewRestController {
     private final ReviewService reviewService;
