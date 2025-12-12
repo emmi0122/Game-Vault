@@ -1,6 +1,7 @@
 package se.yrgo.service.review;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import se.yrgo.data.ReviewRepository;
@@ -30,16 +31,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void createReview(Review review) {
         try {
-            ProfileResponseDTO response = restClient.get()
-                    .uri(profileServiceUrl + "/getProfile?profileId=" + review.getProfileId())
-                    .retrieve()
-                    .body(ProfileResponseDTO.class);
-
-            if (response == null) {
-                throw new RuntimeException("Couldn't find profile");
+            ProfileResponseDTO response = findProfile(review.getProfileId());
+            if (response == null|| response.profile() == null) {
+                throw new ReviewCreationException("Couldn't find profile");
             }
             review.setCreatedAt(Instant.now());
             reviewRepo.save(review);
+        } catch (ReviewCreationException ex) {
+            throw ex;
         } catch (Exception e) {
             throw new ReviewCreationException("Could not create review", e);
         }
@@ -64,17 +63,11 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepo.findAllReviewsForGame(gameId);
 
         return reviews.stream().map(review -> {
-            ProfileResponseDTO response = restClient.get()
-                    .uri(profileServiceUrl + "/getProfile?profileId=" + review.getProfileId())
-                    .retrieve()
-                    .body(ProfileResponseDTO.class);
-
-            if(response == null) {
+            ProfileResponseDTO response = findProfile(review.getProfileId());
+            if(response == null || response.profile() == null) {
                 throw new RuntimeException("Couldn't find profile");
             }
-
             ProfileDTO profile = response.profile();
-
             ReviewResponseDTO reviewResponseDTO = new ReviewResponseDTO();
             return reviewResponseDTO.toDto(review, profile);
         }).toList();
@@ -82,8 +75,18 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> findAllReviewsForProfile(Long profileId) {
+        ProfileResponseDTO response = findProfile(profileId);
+        if (response == null|| response.profile() == null) {
+            throw new ReviewNotFoundException("Couldn't find profile");
+        }
         return reviewRepo.findAllReviewsForProfile(profileId);
     }
 
+    public ProfileResponseDTO findProfile(Long id) {
+        return restClient.get()
+                .uri(profileServiceUrl + "/getProfile?profileId=" + id)
+                .retrieve()
+                .body(ProfileResponseDTO.class);
+    }
 
 }
