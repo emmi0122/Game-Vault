@@ -3,7 +3,7 @@ import type { Profile } from "../interfaces/Typer";
 const baseURL = "http://localhost:8080";
 const mapping = "/profile";
 
-export async function getProfile(profileId: String): Promise<Profile | undefined> {
+export async function getProfile(profileId: string): Promise<Profile | undefined> {
     try {
         const response = await fetch(`${baseURL}${mapping}/getProfile?profileId=${profileId}`, {
             method: "Get",

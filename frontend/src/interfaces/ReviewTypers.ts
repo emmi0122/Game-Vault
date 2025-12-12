@@ -1,0 +1,16 @@
+export interface Review {
+    reviewId: number,
+    rating: number,
+    text: string,
+    createdAt: string,
+    profileUsername: string,
+    avatarUrl: string
+}
+
+export interface ReviewDTO {
+    profileId: string,
+    gameId: string,
+    rating: string,
+    text: string
+}
+

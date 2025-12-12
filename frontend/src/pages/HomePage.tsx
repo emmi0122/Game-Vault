@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getProfile } from '../endpoints/ProfileEndpoints';
 
 export default function HomePage() {
-    const [userId, setUserId] = useState<String|null>("");
+    const [userId, setUserId] = useState<string|null>("");
     
     useEffect(() =>{
         const stordeUserId = localStorage.getItem("profileId");
