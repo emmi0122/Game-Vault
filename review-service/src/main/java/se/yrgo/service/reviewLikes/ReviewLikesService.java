@@ -3,7 +3,6 @@ package se.yrgo.service.reviewLikes;
 import se.yrgo.domain.ReviewLikes;
 
 public interface ReviewLikesService {
-    void addLike(ReviewLikes reviewLikes);
-    void deleteLike(ReviewLikes reviewLikes);
-    void updateLike(ReviewLikes updatedLikes);
+    void addLike(Long id);
+    void deleteLike(Long id, Long profileId);
 }

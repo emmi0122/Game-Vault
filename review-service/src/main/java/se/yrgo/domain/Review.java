@@ -20,7 +20,10 @@ public class Review {
     private String text;
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "review",
+            cascade = CascadeType.ALL
+    )
     private List<ReviewLikes> likes;
 
     public Review() {};
@@ -67,5 +70,9 @@ public class Review {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ReviewLikes> getLikes() {
+        return likes;
     }
 }

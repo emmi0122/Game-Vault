@@ -1,5 +1,6 @@
 package se.yrgo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -12,8 +13,8 @@ public class ReviewLikes {
     private Long profileId;
     private Instant likedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "review_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
     public ReviewLikes() {}
