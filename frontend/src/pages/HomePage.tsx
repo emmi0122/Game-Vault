@@ -30,9 +30,10 @@ export default function HomePage() {
     return (
         <>
             <HeaderComponent />
+            <main>
             <p>Hello: {profile?.profileName}</p>
             <button onClick={consoleProfile} >print profile</button>
-
+            </main>
         </>
     );
 }

@@ -5,6 +5,15 @@ export interface Review {
     createdAt: string,
     profileUsername: string,
     avatarUrl: string
+    likes: ReviewLike[]
+}
+
+export interface ReviewLike {
+    reviewLikeId: number,
+    likedAt: string,
+    reviewId: number,
+    profileId: string,
+    profileUsername: string
 }
 
 export interface ReviewDTO {

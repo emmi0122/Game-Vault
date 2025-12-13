@@ -15,7 +15,7 @@ export default function CreateAccount() {
 
     const navigate = useNavigate();
 
-    const handleCancel = () => {
+    const toHomePage = () => {
         navigate("/");
     };
 
@@ -74,6 +74,8 @@ export default function CreateAccount() {
             if (user?.profileId) {
                 localStorage.setItem("profileId", String(user.profileId));
                 setMessage("Registration successful!");
+                toHomePage();
+
             } else if (user?.message) {
                 setMessage(`Registration failed: ${user.message}`);
             } else {
@@ -155,7 +157,7 @@ export default function CreateAccount() {
                 <button
                     type="button"
                     className="cancelbtn"
-                    onClick={handleCancel}
+                    onClick={toHomePage}
                 >
                     Cancel
                 </button>
