@@ -1,10 +1,14 @@
 package se.yrgo.service.reviewLikes;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import se.yrgo.data.ReviewLikesRepository;
 import se.yrgo.data.ReviewRepository;
 import se.yrgo.domain.Review;
 import se.yrgo.domain.ReviewLikes;
+import se.yrgo.dto.ProfileDTO;
+import se.yrgo.dto.ProfileResponseDTO;
 import se.yrgo.exception.ProfileNotFound;
 import se.yrgo.exception.ReviewNotFoundException;
 
@@ -16,18 +20,29 @@ import java.util.Optional;
 public class ReviewLikesServiceImpl implements ReviewLikesService {
     private final ReviewLikesRepository reviewLikesRepository;
     private final ReviewRepository reviewRepository;
+    private final RestClient restClient;
 
-    public ReviewLikesServiceImpl(ReviewLikesRepository rlr, ReviewRepository rr) {
+    @Value("${profile.service.url}")
+    private String profileServiceUrl;
+
+
+    public ReviewLikesServiceImpl(ReviewLikesRepository rlr, ReviewRepository rr, RestClient restClient) {
         this.reviewLikesRepository = rlr;
         this.reviewRepository = rr;
+        this.restClient = restClient;
     }
 
-    public void addLike(Long id) {
-        Review review = reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
+    public void addLike(Long reviewId, Long profileId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
+        ProfileResponseDTO response = findProfile(profileId);
+        if (response == null || response.profile() == null) {
+            throw new ProfileNotFound("Couldn't find profile");
+        }
+        ProfileDTO profile = response.profile();
         ReviewLikes like = new ReviewLikes();
         like.setReview(review);
         like.setLikedAt(Instant.now());
-        like.setProfileId(review.getProfileId());
+        like.setProfileId(profile.getProfileId());
         review.getLikes().add(like);
         reviewLikesRepository.save(like);
     }
@@ -41,6 +56,13 @@ public class ReviewLikesServiceImpl implements ReviewLikesService {
         review.getLikes().remove(like);
         reviewLikesRepository.delete(like);
 
+    }
+
+    public ProfileResponseDTO findProfile(Long id) {
+        return restClient.get()
+                .uri(profileServiceUrl + "/getProfile?profileId=" + id)
+                .retrieve()
+                .body(ProfileResponseDTO.class);
     }
 
 }

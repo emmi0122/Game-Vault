@@ -38,7 +38,7 @@ public class ReviewResponseDTO {
                         profileDTO.getProfileName(),
                         profileDTO.getAvatarURL(),
                         review.getLikes().stream()
-                                .map(like -> new ReviewLikeDTO(like.getId(), profileDTO.getProfileName(), like.getLikedAt(), like.getReview().getId())).collect(Collectors.toList())
+                                .map(like -> new ReviewLikeDTO(like.getId(), profileDTO.getProfileId(), profileDTO.getProfileName(), like.getLikedAt(), like.getReview().getId())).collect(Collectors.toList())
                 );
         }
 

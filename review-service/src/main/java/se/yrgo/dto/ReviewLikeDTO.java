@@ -6,14 +6,16 @@ import java.time.Instant;
 
 public class ReviewLikeDTO {
     private Long reviewLikeId;
+    private Long profileId;
     private String profileUsername;
     private Instant likedAt;
     private Long reviewId;
 
     public ReviewLikeDTO() {};
 
-    public ReviewLikeDTO(Long reviewLikeId, String profileUsername, Instant likedAt, Long reviewId) {
+    public ReviewLikeDTO(Long reviewLikeId, Long profileId, String profileUsername, Instant likedAt, Long reviewId) {
         this.reviewLikeId = reviewLikeId;
+        this.profileId = profileId;
         this.profileUsername = profileUsername;
         this.likedAt = likedAt;
         this.reviewId = reviewId;
@@ -28,11 +30,19 @@ public class ReviewLikeDTO {
         this.reviewLikeId = reviewLikeId;
     }
 
-    public String getProfileId() {
+    public Long getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(Long profileId) {
+        this.profileId = profileId;
+    }
+
+    public String getProfileUsername() {
         return profileUsername;
     }
 
-    public void setProfileId(String profileUsername) {
+    public void setProfileUsername(String profileUsername) {
         this.profileUsername = profileUsername;
     }
 

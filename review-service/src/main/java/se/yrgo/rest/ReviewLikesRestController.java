@@ -4,10 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.yrgo.domain.ReviewLikes;
+import se.yrgo.dto.LikeRequestDTO;
 import se.yrgo.service.reviewLikes.ReviewLikesService;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("likes")
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/likes")
 public class ReviewLikesRestController {
     private final ReviewLikesService reviewLikesService;
 
@@ -16,13 +20,13 @@ public class ReviewLikesRestController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addLike(@RequestParam Long id) {
-        reviewLikesService.addLike(id);
-        return ResponseEntity.ok("Like added");
+    public ResponseEntity<Map<String, String>> addLike(@RequestBody LikeRequestDTO dto) {
+        reviewLikesService.addLike(dto.reviewId(), dto.profileId());
+        return ResponseEntity.ok(Map.of("message", "Like added"));
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteLike(@RequestParam Long reviewId, Long profileId) {
+    public ResponseEntity<String> deleteLike(@RequestParam Long reviewId, @RequestParam Long profileId) {
         reviewLikesService.deleteLike(reviewId, profileId);
         return ResponseEntity.ok("Like deleted from review");
     }
