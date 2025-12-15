@@ -16,12 +16,6 @@ public class ProfileServiceImpl implements ProfileService{
         this.pr = pr;
     }
 
-    // @Override
-    // public Optional<Profile> getProfile(Long profileId) {
-    //     Optional<Profile> profile = pr.findById(profileId);
-    //     return profile;
-    // }
-
     @Override
     public Profile getProfile(Long profileId) throws ProfileNotFoundException {
         Optional<Profile> profile = pr.findById(profileId);
