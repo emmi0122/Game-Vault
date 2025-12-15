@@ -1,10 +1,9 @@
 package se.yrgo.service;
 
-import java.util.Optional;
-
 import se.yrgo.domain.Profile;
+import se.yrgo.exception.ProfileNotFoundException;
 
 
 public interface ProfileService {
-    Optional<Profile> getProfile(Long profileId);
+    Profile getProfile(Long profileId) throws ProfileNotFoundException;
 }

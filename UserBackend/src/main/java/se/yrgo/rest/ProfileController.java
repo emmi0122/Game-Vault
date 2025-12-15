@@ -1,4 +1,4 @@
-package se.yrgo.contoller;
+package se.yrgo.rest;
 
 import java.util.*;
 
@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import se.yrgo.domain.Profile;
 import se.yrgo.dto.ProfileDTO;
+import se.yrgo.exception.ProfileNotFoundException;
 import se.yrgo.service.ProfileService;
 
 @RestController
@@ -18,19 +19,23 @@ public class ProfileController {
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
-
+    
     @GetMapping("/getProfile")
     public ResponseEntity<?> getProfile(@RequestParam Long profileId) {
-        Optional<Profile> optProfile = profileService.getProfile(profileId);
-
-        if (optProfile.isEmpty()) {
+        Profile profile;
+        try{
+            profile = profileService.getProfile(profileId);
+        }catch(ProfileNotFoundException error){
+            System.err.println("An error occurred, why?:");
+            error.printStackTrace();
+            
             return ResponseEntity.ok(Map.of(
                     "status", "Major ERROR",
                     "message", "Could not found the profile connected to the user?"));
         }
 
         ProfileDTO profileDTO = new ProfileDTO();
-        profileDTO = profileDTO.toDTO(optProfile.get()); 
+        profileDTO = ProfileDTO.toDTO(profile); 
 
         return ResponseEntity.ok(Map.of(
                 "status", "success",
