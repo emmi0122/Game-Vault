@@ -1,8 +1,12 @@
 package se.yrgo.dto;
 
 import se.yrgo.domain.Review;
+import se.yrgo.domain.ReviewLikes;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReviewResponseDTO {
         private Long reviewId;
@@ -10,15 +14,19 @@ public class ReviewResponseDTO {
         private String text;
         private Instant createdAt;
         private String profileUsername;
+        private String avatarUrl;
+        private List<ReviewLikeDTO> likes = new ArrayList<>();
 
         public ReviewResponseDTO() {};
 
-        public ReviewResponseDTO(Long reviewId, int rating, String text, Instant createdAt, String profileUsername) {
+        public ReviewResponseDTO(Long reviewId, int rating, String text, Instant createdAt, String profileUsername, String avatarUrl, List<ReviewLikeDTO> likes) {
                 this.reviewId = reviewId;
                 this.rating = rating;
                 this.text = text;
                 this.createdAt = createdAt;
                 this.profileUsername = profileUsername;
+                this.avatarUrl = avatarUrl;
+                this.likes = likes;
         }
 
         public ReviewResponseDTO toDto(Review review, ProfileDTO profileDTO) {
@@ -27,7 +35,10 @@ public class ReviewResponseDTO {
                         review.getRating(),
                         review.getText(),
                         review.getCreatedAt(),
-                        profileDTO.getProfileName()
+                        profileDTO.getProfileName(),
+                        profileDTO.getAvatarURL(),
+                        review.getLikes().stream()
+                                .map(like -> new ReviewLikeDTO(like.getId(), profileDTO.getProfileId(), profileDTO.getProfileName(), like.getLikedAt(), like.getReview().getId())).collect(Collectors.toList())
                 );
         }
 
@@ -49,5 +60,11 @@ public class ReviewResponseDTO {
 
         public String getProfileUsername() {
                 return profileUsername;
+        }
+
+        public String getAvatarUrl() {return avatarUrl; }
+
+        public List<ReviewLikeDTO> getLikes() {
+                return likes;
         }
 };

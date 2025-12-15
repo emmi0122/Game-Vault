@@ -1,28 +1,21 @@
-import { Link } from 'react-router-dom';
-import './../style/Login.css'
+import {useNavigate} from 'react-router-dom';
+import './../style/Home.css'
 import { useEffect, useState } from 'react';
 import { getProfile } from '../endpoints/ProfileEndpoints';
+import HeaderComponent from "../component/HeaderComponent.tsx";
+import type {Profile} from "../interfaces/Typer.ts";
 
 export default function HomePage() {
-    const [userId, setUserId] = useState<String|null>("");
-    
-    useEffect(() =>{
+    const [profile, setProfile] = useState<Profile | undefined>(undefined);
+
+    /*useEffect(() =>{
         const stordeUserId = localStorage.getItem("profileId");
-
-        if(stordeUserId !== null){
-            setUserId(stordeUserId);
+        if(!stordeUserId){
+            return
         }
+        getProfile(stordeUserId).then(profile => setProfile(profile));
 
-        return (
-            localStorage.setItem("profileId", "")
-        );
-
-    }, []);
-
-    function logUt(){
-        localStorage.setItem("profileId", "");
-        setUserId("")
-    }
+    }, []);*/
 
     function consoleProfile(){
         const stordeUserId = localStorage.getItem("profileId");
@@ -36,13 +29,11 @@ export default function HomePage() {
 
     return (
         <>
-            <p>Hello user: {userId}</p>
-
-            <span className="psw"><Link to={'/login'} >Log In</Link></span>
-            <span className="psw"><Link to={'/create'} >Sign in</Link></span>
-            <button onClick={logUt}>Log out</button>
-            <button onClick={consoleProfile}>print profile</button>
-
+            <HeaderComponent />
+            <main>
+            <p>Hello: {profile?.profileName}</p>
+            <button onClick={consoleProfile} >print profile</button>
+            </main>
         </>
     );
 }
