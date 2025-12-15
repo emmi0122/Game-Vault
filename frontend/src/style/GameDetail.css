@@ -1,10 +1,10 @@
 .review-container {
     background-color: rgba(135, 206, 250, 0.5);
-    width: 50%;
     border: 1px solid #1a1a1a;
     border-radius: 20px;
     margin: 1rem;
     padding: 0.8rem;
+
 
     img {
         width: 15px;
@@ -54,4 +54,25 @@
     div > label > input {
         margin-right: 5px;
             }
+}
+
+button {
+    background-color: white;
+    color: black;
+    padding: 0.3rem;
+}
+
+.review-button {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        font-size: small;
+        padding-inline: 0.5rem;
+        img {
+            width: 12px;
+            margin-right: 0.3rem;
+        }
+    }
+
 }

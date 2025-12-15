@@ -1,26 +1,34 @@
 package se.yrgo.rest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.yrgo.domain.ReviewLikes;
+import se.yrgo.dto.LikeRequestDTO;
 import se.yrgo.service.reviewLikes.ReviewLikesService;
 
-@RestController
-@RequestMapping("likes")
-public class ReviewLikesRestController {
-    private ReviewLikesService rls;
+import java.util.Map;
 
-    public ReviewLikesRestController(ReviewLikesService rls) {
-        this.rls = rls;
+@RestController
+@CrossOrigin(origins = "http://localhost:5173")
+@RequestMapping("/likes")
+public class ReviewLikesRestController {
+    private final ReviewLikesService reviewLikesService;
+
+    public ReviewLikesRestController(ReviewLikesService reviewLikesService) {
+        this.reviewLikesService = reviewLikesService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addLike(@RequestBody ReviewLikes newLike) {
-        rls.addLike(newLike);
-        return ResponseEntity.ok("Like added");
+    public ResponseEntity<Map<String, String>> addLike(@RequestBody LikeRequestDTO dto) {
+        reviewLikesService.addLike(dto.reviewId(), dto.profileId());
+        return ResponseEntity.ok(Map.of("message", "Like added"));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteLike(@RequestParam Long reviewId, @RequestParam Long profileId) {
+        reviewLikesService.deleteLike(reviewId, profileId);
+        return ResponseEntity.ok("Like deleted from review");
     }
 
 }

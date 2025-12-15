@@ -7,7 +7,6 @@ import HeaderComponent from "../component/HeaderComponent.tsx";
 
 export default function GameDetailPage() {
     const [listOfReviews, setListOfReviews] = useState<Review[]>([]);
-
     useEffect(() => {
         getReviewList("1").then(data => setListOfReviews(data));
     }, []);
@@ -15,10 +14,11 @@ export default function GameDetailPage() {
     return (
         <>
             <HeaderComponent />
+            <main>
             {listOfReviews.map(review =>
                 <ReviewComponent key={review.reviewId} review={review}/>)}
             <CreateReviewComponent gameId="1"/>
-
+            </main>
         </>
     )
 }

@@ -28,4 +28,14 @@ public class ReviewRestControllerHandler {
         );
         return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ProfileNotFound.class)
+    public ResponseEntity<ErrorMessage> handleProfileNorFound() {
+        ErrorMessage errorMessage = new ErrorMessage(
+                HttpStatus.NOT_FOUND.value(),
+                "Profile not found, please try again",
+                Instant.now()
+        );
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
 }

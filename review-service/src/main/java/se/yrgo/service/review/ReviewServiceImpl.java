@@ -9,6 +9,7 @@ import se.yrgo.domain.Review;
 import se.yrgo.dto.ProfileDTO;
 import se.yrgo.dto.ProfileResponseDTO;
 import se.yrgo.dto.ReviewResponseDTO;
+import se.yrgo.exception.ProfileNotFound;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.exception.ReviewNotFoundException;
 
@@ -33,12 +34,12 @@ public class ReviewServiceImpl implements ReviewService {
         try {
             ProfileResponseDTO response = findProfile(review.getProfileId());
             if (response == null|| response.profile() == null) {
-                throw new ReviewCreationException("Couldn't find profile");
+                throw new ProfileNotFound("Couldn't find profile");
             }
             review.setCreatedAt(Instant.now());
             reviewRepo.save(review);
-        } catch (ReviewCreationException ex) {
-            throw ex;
+        } catch (ProfileNotFound e) {
+            throw e;
         } catch (Exception e) {
             throw new ReviewCreationException("Could not create review", e);
         }
@@ -65,7 +66,7 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews.stream().map(review -> {
             ProfileResponseDTO response = findProfile(review.getProfileId());
             if(response == null || response.profile() == null) {
-                throw new RuntimeException("Couldn't find profile");
+                throw new ProfileNotFound("Couldn't find profile");
             }
             ProfileDTO profile = response.profile();
             ReviewResponseDTO reviewResponseDTO = new ReviewResponseDTO();
@@ -77,7 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> findAllReviewsForProfile(Long profileId) {
         ProfileResponseDTO response = findProfile(profileId);
         if (response == null|| response.profile() == null) {
-            throw new ReviewNotFoundException("Couldn't find profile");
+            throw new ProfileNotFound("Couldn't find profile");
         }
         return reviewRepo.findAllReviewsForProfile(profileId);
     }
