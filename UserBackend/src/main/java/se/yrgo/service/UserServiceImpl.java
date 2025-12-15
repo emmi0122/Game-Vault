@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import se.yrgo.data.UserRepository;
 import se.yrgo.domain.Profile;
 import se.yrgo.domain.User;
+import se.yrgo.exception.InvalidLoginException;
+import se.yrgo.exception.UserNotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,11 +25,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User registerUserWithProfile(User user, Profile profile) {
+        // validate user
         // if user excist
         if (ur.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Username already exists"); //custom exception in futer
+            throw new IllegalArgumentException("Username already exists");
         }
-
+        
+        // validate profile 
         String encoderPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encoderPassword);
         user.setCreatedAt(LocalDateTime.now());
@@ -37,9 +41,24 @@ public class UserServiceImpl implements UserService {
         return ur.save(user);
     }
 
-    public Optional<User> findUserByEmail(String email){
+    public User findUserByEmail(String email) throws UserNotFoundException {
         Optional<User> user = ur.findUserByEmail(email);
-        return user;
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("No user found with this email: " + email, null);
+        }
+
+        return user.get();
     }
-    
+
+    @Override
+    public void validatePassword(User foundUser, User loginUser) {
+        if (foundUser == null || loginUser == null || loginUser.getPassword() == null) {
+            throw new InvalidLoginException("Invalid username or password", null);
+        }
+
+        if (!passwordEncoder.matches(loginUser.getPassword(), foundUser.getPassword())) {
+            throw new InvalidLoginException("Invalid username or password", null);
+        }
+    }
+
 }

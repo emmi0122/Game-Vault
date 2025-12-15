@@ -1,15 +1,16 @@
-package se.yrgo.contoller;
+package se.yrgo.rest;
 
 import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import se.yrgo.service.UserServiceImpl;
 import se.yrgo.domain.*;
 import se.yrgo.dto.RegistrationRequestDTO;
+import se.yrgo.exception.InvalidLoginException;
+import se.yrgo.exception.UserNotFoundException;
 
 import java.util.*;
 
@@ -18,20 +19,14 @@ import java.util.*;
 @RequestMapping("/user")
 public class UserController {
     private UserServiceImpl userService;
-    private PasswordEncoder passwordEncoder;
 
-    public UserController(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegistrationRequestDTO requestDTO) {
-        // if user excist
-        try {
-            // validate user
-            // validate profile
-            // if valid do transaction
+        try {    
             User user = userService.registerUserWithProfile(requestDTO.getUser(), requestDTO.getProfile());
 
             return ResponseEntity.ok(Map.of(
@@ -49,19 +44,21 @@ public class UserController {
                     "message", "User with that email already exists"));
         }
     }
-
+    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        Optional<User> findUser = userService.findUserByEmail(user.getEmail());
+        User dbUser;
 
-        // Kontrollera om användaren finns och lösenordet matchar
-        if (findUser.isEmpty() || !passwordEncoder.matches(user.getPassword(), findUser.get().getPassword())) {
+        try {
+            dbUser = userService.findUserByEmail(user.getEmail());
+            userService.validatePassword(dbUser, user);
+
+        } catch (UserNotFoundException | InvalidLoginException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                     "status", "failed",
-                    "message", "Invalid username or password"));
+                    "message", "Invalid email or password"));
         }
 
-        User dbUser = findUser.get();
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 dbUser.getId(),
                 null, // no past-one password

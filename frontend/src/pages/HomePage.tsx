@@ -13,6 +13,10 @@ export default function HomePage() {
             setUserId(stordeUserId);
         }
 
+        return (
+            localStorage.setItem("profileId", "")
+        );
+
     }, []);
 
     function logUt(){

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import se.yrgo.data.ProfileRepository;
 import se.yrgo.domain.Profile;
+import se.yrgo.exception.ProfileNotFoundException;
 
 @Service
 public class ProfileServiceImpl implements ProfileService{
@@ -15,10 +16,21 @@ public class ProfileServiceImpl implements ProfileService{
         this.pr = pr;
     }
 
+    // @Override
+    // public Optional<Profile> getProfile(Long profileId) {
+    //     Optional<Profile> profile = pr.findById(profileId);
+    //     return profile;
+    // }
+
     @Override
-    public Optional<Profile> getProfile(Long profileId) {
+    public Profile getProfile(Long profileId) throws ProfileNotFoundException {
         Optional<Profile> profile = pr.findById(profileId);
-        return profile;
+
+        if(profile.isEmpty()){
+            throw new ProfileNotFoundException("Could not found the profile connected to the user?", new NullPointerException());
+        }
+
+        return profile.get();
     }
     
 }
