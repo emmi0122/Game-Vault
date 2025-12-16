@@ -37,6 +37,10 @@ export default function GameDetailPage() {
         review()
     }, []);
 
+    function handleDeletedReview(reviewId: number) {
+        setListOfReviews(prev => prev.filter(r => r.reviewId !== reviewId));
+    }
+
     return (
         <>
             <HeaderComponent />
@@ -52,9 +56,9 @@ export default function GameDetailPage() {
                         <span key={platform.id}>{platform.name} </span>
                     )) ?? "Unknown"}
                 </p>
-                {listOfReviews.map(review =>
-                    <ReviewComponent key={review.reviewId} review={review} />)}
-                <CreateReviewComponent gameId="1" />
+            {listOfReviews.map(review =>
+                <ReviewComponent key={review.reviewId} review={review} onDelete={handleDeletedReview}/>)}
+            <CreateReviewComponent gameId="1"/>
             </main>
         </>
     )

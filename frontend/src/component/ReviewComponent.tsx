@@ -7,7 +7,7 @@ import ReviewButtonComponent from "./ReviewButtonComponent.tsx";
 import {deleteReview} from "../endpoints/ReviewEndpoints.ts";
 
 
-export default function ReviewComponent({review}: {review: Review} ) {
+export default function ReviewComponent({review, onDelete}: {review: Review; onDelete: (reviewId: number) => void;} ) {
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(review.likes.length);
     const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +31,7 @@ export default function ReviewComponent({review}: {review: Review} ) {
         const success = await deleteReview(review.reviewId.toString())
         if(success) {
             setIsLoading(false)
+            onDelete(review.reviewId)
             console.log("Review deleted")
         } else {
             console.log("Review couldn't be deleted")
