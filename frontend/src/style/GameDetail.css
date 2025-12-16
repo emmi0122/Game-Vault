@@ -72,7 +72,8 @@ button {
     padding-inline: 0.5rem;
 }
 
-.review-button > button > img {
-    width: 12px;
+.icon-size {
+    width: 20px;
+    height: 20px;
     margin-right: 0.3rem;
 }

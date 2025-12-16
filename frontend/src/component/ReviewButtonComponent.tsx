@@ -55,7 +55,7 @@ export default function ReviewButtonComponent({amountOfLikes, reviewId}: ReviewB
             <button
                 onClick={handleLike}
                 style={{ backgroundColor: liked ? "deepskyblue" : "white"}}>
-                <img src={like} alt="Like icom" />{likeCount}</button>
+                <img className="icon-size" src={like} alt="Like icom" />{likeCount}</button>
         </div>
     )
 }
