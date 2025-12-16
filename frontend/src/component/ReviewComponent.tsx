@@ -1,8 +1,6 @@
 import star from "../assets/star.png";
-import like from '../assets/like.png';
 import type { Review } from "../interfaces/ReviewTypers.ts";
 import './../style/GameDetail.css'
-import {addLike, removeLike} from "../endpoints/ReviewLikeEndpoints.ts";
 import {useEffect, useState} from "react";
 import ReviewButtonComponent from "./ReviewButtonComponent.tsx";
 
