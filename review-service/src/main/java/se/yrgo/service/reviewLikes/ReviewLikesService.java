@@ -4,5 +4,5 @@ import se.yrgo.domain.ReviewLikes;
 
 public interface ReviewLikesService {
     void addLike(Long reviewId, Long profileId);
-    void deleteLike(Long id, Long profileId);
+    boolean deleteLike(Long id, Long profileId);
 }

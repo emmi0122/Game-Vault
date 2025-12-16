@@ -29,7 +29,7 @@ public class ReviewResponseDTO {
                 this.likes = likes;
         }
 
-        public ReviewResponseDTO toDto(Review review, ProfileDTO profileDTO) {
+        public ReviewResponseDTO toDto(Review review, ProfileDTO profileDTO, List<ReviewLikeDTO> likeDTO) {
                 return new ReviewResponseDTO(
                         review.getId(),
                         review.getRating(),
@@ -37,8 +37,7 @@ public class ReviewResponseDTO {
                         review.getCreatedAt(),
                         profileDTO.getProfileName(),
                         profileDTO.getAvatarURL(),
-                        review.getLikes().stream()
-                                .map(like -> new ReviewLikeDTO(like.getId(), profileDTO.getProfileId(), profileDTO.getProfileName(), like.getLikedAt(), like.getReview().getId())).collect(Collectors.toList())
+                        likeDTO
                 );
         }
 

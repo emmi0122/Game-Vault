@@ -34,28 +34,25 @@ public class ReviewLikesServiceImpl implements ReviewLikesService {
 
     public void addLike(Long reviewId, Long profileId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
-        ProfileResponseDTO response = findProfile(profileId);
-        if (response == null || response.profile() == null) {
-            throw new ProfileNotFound("Couldn't find profile");
-        }
-        ProfileDTO profile = response.profile();
         ReviewLikes like = new ReviewLikes();
         like.setReview(review);
         like.setLikedAt(Instant.now());
-        like.setProfileId(profile.getProfileId());
-        review.getLikes().add(like);
+        like.setProfileId(profileId);
         reviewLikesRepository.save(like);
     }
 
-    public void deleteLike(Long reviewId, Long profileId) {
+    public boolean deleteLike(Long reviewId, Long profileId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
-        ReviewLikes like = review.getLikes().stream()
+        Optional<ReviewLikes> likeOpt = review.getLikes().stream()
                 .filter(l -> l.getProfileId().equals(profileId))
-                .findFirst()
-                .orElseThrow(() -> new ProfileNotFound("Couldn't find profile"));
+                .findFirst();
+        if(likeOpt.isEmpty()) {
+            return false;
+        }
+        ReviewLikes like = likeOpt.get();
         review.getLikes().remove(like);
         reviewLikesRepository.delete(like);
-
+        return true;
     }
 
     public ProfileResponseDTO findProfile(Long id) {

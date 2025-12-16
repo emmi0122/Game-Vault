@@ -8,6 +8,7 @@ import se.yrgo.data.ReviewRepository;
 import se.yrgo.domain.Review;
 import se.yrgo.dto.ProfileDTO;
 import se.yrgo.dto.ProfileResponseDTO;
+import se.yrgo.dto.ReviewLikeDTO;
 import se.yrgo.dto.ReviewResponseDTO;
 import se.yrgo.exception.ProfileNotFound;
 import se.yrgo.exception.ReviewCreationException;
@@ -15,6 +16,7 @@ import se.yrgo.exception.ReviewNotFoundException;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -63,14 +65,31 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewResponseDTO> findAllReviewsForGame(Long gameId) {
         List<Review> reviews = reviewRepo.findAllReviewsForGame(gameId);
 
-        return reviews.stream().map(review -> {
+        return reviews.stream()
+                .map(review -> {
             ProfileResponseDTO response = findProfile(review.getProfileId());
             if(response == null || response.profile() == null) {
                 throw new ProfileNotFound("Couldn't find profile");
             }
+
             ProfileDTO profile = response.profile();
-            ReviewResponseDTO reviewResponseDTO = new ReviewResponseDTO();
-            return reviewResponseDTO.toDto(review, profile);
+            List<ReviewLikeDTO> likeDTO = review.getLikes().stream()
+                    .map(like -> {
+                        ProfileResponseDTO likeProfileResponse = findProfile(like.getProfileId());
+                        String likeUserName = "Unkown";
+                        if(likeProfileResponse != null && likeProfileResponse.profile() != null) {
+                            likeUserName = likeProfileResponse.profile().getProfileName();
+                        }
+                        return new ReviewLikeDTO(
+                                like.getId(),
+                                like.getProfileId(),
+                                likeUserName,
+                                like.getLikedAt(),
+                                review.getId()
+                        );
+                    }).toList();
+            ReviewResponseDTO responseDTO = new ReviewResponseDTO();
+            return responseDTO.toDto(review, profile, likeDTO);
         }).toList();
     }
 

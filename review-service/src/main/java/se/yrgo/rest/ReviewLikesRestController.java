@@ -1,9 +1,7 @@
 package se.yrgo.rest;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.yrgo.domain.ReviewLikes;
 import se.yrgo.dto.LikeRequestDTO;
 import se.yrgo.service.reviewLikes.ReviewLikesService;
 
@@ -26,9 +24,9 @@ public class ReviewLikesRestController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteLike(@RequestParam Long reviewId, @RequestParam Long profileId) {
-        reviewLikesService.deleteLike(reviewId, profileId);
-        return ResponseEntity.ok("Like deleted from review");
+    public ResponseEntity<?> deleteLike(@RequestBody LikeRequestDTO dto) {
+        boolean deleted = reviewLikesService.deleteLike(dto.reviewId(), dto.profileId());
+        return ResponseEntity.ok(Map.of("message", deleted ? "Like deleted" : "No like found"));
     }
 
 }
