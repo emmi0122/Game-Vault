@@ -6,10 +6,12 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"review_id", "profileId"}))
 public class ReviewLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private Long profileId;
     private Instant likedAt;
 

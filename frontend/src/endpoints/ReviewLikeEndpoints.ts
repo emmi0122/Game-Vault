@@ -25,3 +25,26 @@ export async function addLike(reviewId: string, profileId: string): Promise<Revi
         return undefined;
     }
 }
+
+export async function removeLike(reviewId: string, profileId: string): Promise<String | undefined> {
+    try {
+        const response = await fetch(`${baseUrl}${mapping}/delete`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({reviewId: reviewId, profileId: profileId})
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Like removed from review: ", data);
+            return data;
+        } else {
+            console.error("Couldn't remove like from review:", data);
+            return data;
+        }
+    } catch (error) {
+        console.error("Network error: ", error);
+        return undefined;
+    }
+}
