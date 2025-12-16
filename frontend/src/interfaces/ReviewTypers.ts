@@ -12,7 +12,7 @@ export interface ReviewLike {
     reviewLikeId: number,
     likedAt: string,
     reviewId: number,
-    profileId: string,
+    profileId: number,
     profileUsername: string
 }
 
