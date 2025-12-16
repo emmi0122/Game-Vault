@@ -65,14 +65,14 @@ button {
 .review-button {
     display: flex;
     justify-content: space-between;
+}
 
-    button {
-        font-size: small;
-        padding-inline: 0.5rem;
-        img {
-            width: 12px;
-            margin-right: 0.3rem;
-        }
-    }
+.review-button > button {
+    font-size: small;
+    padding-inline: 0.5rem;
+}
 
+.review-button > button > img {
+    width: 12px;
+    margin-right: 0.3rem;
 }

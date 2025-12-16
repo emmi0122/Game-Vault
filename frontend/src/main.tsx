@@ -1,14 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import HomePage from './pages/HomePage';
 import GameDetailPage from "./pages/GameDetailPage.tsx";
+import AllGames from './pages/AllGames.tsx';
 // import './index.css'
 // import App from './App.tsx'
 
@@ -33,6 +30,11 @@ const router = createBrowserRouter([
     element: <GameDetailPage />,
     errorElement: <LoginPage />
   },
+  {
+    path: '/allGames',
+    element: <AllGames />,
+    errorElement: <LoginPage />
+  }
 ]);
 
 createRoot(document.getElementById('root')!).render(

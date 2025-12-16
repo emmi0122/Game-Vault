@@ -3,7 +3,7 @@ import type {Review, ReviewDTO} from "../interfaces/ReviewTypers.ts";
 const baseUrl = "http://localhost:8081";
 const mapping = "/reviews"
 
-export async function getReviewList(gameId: string): Promise<Review | undefined> {
+export async function getReviewList(gameId: string): Promise<Review[]> {
     try {
         const response = await fetch(`${baseUrl}${mapping}/all-reviews?gameId=${gameId}`, {
             method: "Get",
@@ -12,16 +12,11 @@ export async function getReviewList(gameId: string): Promise<Review | undefined>
 
         const data = await response.json();
 
-        if (response.ok) {
-            console.log("Found reviews: ", data);
-            return data;
-        } else {
-            console.error("Failed to get reviews:", data);
-            return data;
-        }
+        return data ?? []
+
     } catch (error){
         console.error("Network error: ", error);
-        return undefined;
+        return [];
     }
 }
 
@@ -46,5 +41,26 @@ export async function createReview(newReview: ReviewDTO): Promise<ReviewDTO | un
     } catch (error) {
         console.error("Network error: ", error);
         return undefined;
+    }
+}
+
+export async function deleteReview(reviewId: string): Promise<boolean> {
+    try {
+        const response = await fetch(`${baseUrl}${mapping}/delete-review?reviewId=${reviewId}`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        });
+
+        if(!response.ok) {
+            const text = await response.text();
+            console.error("Delete failed: " + text)
+            return false;
+        }
+        const text = response.text();
+        console.log("Review deleted: ", text);
+        return true;
+    } catch(error) {
+        console.error("Network error: ", error);
+        return false;
     }
 }
