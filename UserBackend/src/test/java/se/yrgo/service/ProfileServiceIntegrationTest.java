@@ -1,6 +1,6 @@
 package se.yrgo.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +42,13 @@ public class ProfileServiceIntegrationTest {
 
         Profile result = profileService.getProfile(profile.getId());
         assertThat(result.getProfileName()).isEqualTo("bar");
+    }
+
+    @Test
+    void shouldThrowAnErrorWhenProfileIsNotFound() throws ProfileNotFoundException {
+        Long InvalidProfileId = -1L;
+
+        assertThatThrownBy(() -> profileService.getProfile(InvalidProfileId))
+        .isInstanceOf(ProfileNotFoundException.class);
     }
 }

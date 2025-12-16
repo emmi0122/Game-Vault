@@ -8,13 +8,11 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import se.yrgo.data.UserRepository;
-import se.yrgo.domain.Profile;
-import se.yrgo.domain.User;
-import se.yrgo.exception.InvalidLoginException;
-import se.yrgo.exception.UserNotFoundException;
+import se.yrgo.domain.*;
+import se.yrgo.exception.*;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
     private UserRepository ur;
     private PasswordEncoder passwordEncoder;
 
