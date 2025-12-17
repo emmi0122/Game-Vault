@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import './../style/SignUp.css';
-import type { RegistrationRequestDTO } from "../interfaces/Typer";
+import type { RegistrationRequestDTO } from "../interfaces/UserTypes";
 import { registerUser } from "../endpoints/UserEndpoints";
 
 export default function CreateAccount() {

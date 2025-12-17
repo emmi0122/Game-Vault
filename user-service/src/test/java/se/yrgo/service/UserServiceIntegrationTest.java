@@ -14,7 +14,10 @@ import se.yrgo.data.UserRepository;
 import se.yrgo.domain.*;
 import se.yrgo.exception.*;
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 public class UserServiceIntegrationTest {
     @Autowired
     private UserRepository userRepository;
@@ -88,7 +91,7 @@ public class UserServiceIntegrationTest {
         String email = "Foo@Bar.gmail.com";
 
         assertThatThrownBy(() -> userService.findUserByEmail(email))
-        .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(UserNotFoundException.class);
 
     }
 
@@ -110,13 +113,12 @@ public class UserServiceIntegrationTest {
         loginUser.setEmail(email);
         loginUser.setPassword(password);
 
-        assertThatCode(() -> 
-            userService.validatePassword(foundUser, loginUser))
-        .doesNotThrowAnyException();
+        assertThatCode(() -> userService.validatePassword(foundUser, loginUser))
+                .doesNotThrowAnyException();
     }
-    
+
     @ParameterizedTest
-    @ValueSource(strings = {"wrongPassword"})
+    @ValueSource(strings = { "wrongPassword" })
     @NullAndEmptySource
     void shouldThrowException_whenPasswordIsInvalid(String inLogPassword) {
         String password = "secret";
@@ -135,7 +137,7 @@ public class UserServiceIntegrationTest {
         User foundUser = userService.findUserByEmail(email);
 
         assertThatThrownBy(() -> userService.validatePassword(foundUser, loginUser))
-        .isInstanceOf(InvalidLoginException.class);
+                .isInstanceOf(InvalidLoginException.class);
     }
 
 }

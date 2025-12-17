@@ -10,7 +10,10 @@ import se.yrgo.data.*;
 import se.yrgo.domain.*;
 import se.yrgo.exception.ProfileNotFoundException;
 
-@DataJpaTest
+@DataJpaTest(properties = {
+        "spring.datasource.url=jdbc:h2:mem:testdb",
+        "spring.jpa.hibernate.ddl-auto=create-drop"
+})
 public class ProfileServiceIntegrationTest {
 
     @Autowired
@@ -48,7 +51,8 @@ public class ProfileServiceIntegrationTest {
     void shouldThrowAnErrorWhenProfileIsNotFound() throws ProfileNotFoundException {
         Long InvalidProfileId = -1L;
 
-        assertThatThrownBy(() -> profileService.getProfile(InvalidProfileId))
+        assertThatThrownBy(() -> 
+            profileService.getProfile(InvalidProfileId))
         .isInstanceOf(ProfileNotFoundException.class);
     }
 }

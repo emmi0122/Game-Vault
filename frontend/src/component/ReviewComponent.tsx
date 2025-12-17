@@ -1,5 +1,5 @@
 import star from "../assets/star.png";
-import type { Review } from "../interfaces/ReviewTypers.ts";
+import type { Review } from "../interfaces/ReviewTypes.ts";
 import './../style/GameDetail.css'
 import {useEffect, useState} from "react";
 import ReviewButtonComponent from "./ReviewButtonComponent.tsx";

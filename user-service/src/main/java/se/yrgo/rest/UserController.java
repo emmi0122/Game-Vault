@@ -1,16 +1,12 @@
 package se.yrgo.rest;
 
 import org.springframework.http.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
 import se.yrgo.service.UserServiceImpl;
 import se.yrgo.domain.*;
 import se.yrgo.dto.RegistrationRequestDTO;
-import se.yrgo.exception.InvalidLoginException;
-import se.yrgo.exception.UserNotFoundException;
+import se.yrgo.exception.*;
 
 import java.util.*;
 
@@ -29,7 +25,9 @@ public class UserController {
         try {    
             User user = userService.registerUserWithProfile(requestDTO.getUser(), requestDTO.getProfile());
 
-            return ResponseEntity.ok(Map.of(
+            return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(Map.of(
                     "status", "success",
                     "message", "User registered successfully",
                     "profileId", user.getUserProfile().getId().toString()));
@@ -39,7 +37,9 @@ public class UserController {
             System.err.println(e.getCause());
             e.printStackTrace();
 
-            return ResponseEntity.badRequest().body(Map.of(
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
                     "status", "error",
                     "message", "User with that email already exists"));
         }
@@ -54,30 +54,34 @@ public class UserController {
             userService.validatePassword(dbUser, user);
 
         } catch (UserNotFoundException | InvalidLoginException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+            System.err.print(e.getMessage());
+            System.err.println(e.getCause());
+            e.printStackTrace();
+
+            return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
                     "status", "failed",
                     "message", "Invalid email or password"));
+        } catch (Exception e){
+            System.err.print(e.getMessage());
+            System.err.println(e.getCause());
+            e.printStackTrace();
+
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(
+                    "status", "failed",
+                    "message", "Network error"));
         }
 
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                dbUser.getId(),
-                null, // no past-one password
-                List.of() // authorities like User/Adimin...
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
         // Returnera JSON till frontend
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity
+            .status(HttpStatus.ACCEPTED)
+            .body(Map.of(
                 "status", "success",
                 "message", "User logged in successfully",
-                // "profile", dbUser.getUserProfile(),
                 "profileId", dbUser.getUserProfile().getId()));
-    }
-
-    @GetMapping("/csrf")
-    public CsrfToken csrf(CsrfToken token) {
-        return token;
     }
 
 }
