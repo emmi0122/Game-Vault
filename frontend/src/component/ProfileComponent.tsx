@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import './../style/Home.css'
 import { useEffect, useState } from 'react';
 import { getProfile } from '../endpoints/ProfileEndpoints';
 import type { Profile } from "../interfaces/UserTypes.ts";
+import style from '../style/Profile.module.css'
+import Button from "./ButtonComponent.tsx";
 
 export default function ProfileComponent() {
     const [profile, setProfile] = useState<Profile | undefined>(undefined);
@@ -35,30 +36,24 @@ export default function ProfileComponent() {
     }
 
     return (
-        <div className="profile-section">
+        <div className={style.profileContainer}>
             {profile ? (
                 <>
                     <img
                         src={profile.avatarURL}
                         alt="Avatar"
-                        className="avatar"
+                        className={style.avatar}
                     />
                     <h2>{profile.profileName}</h2>
-                    <p className="real-name">{profile.realName}</p>
+                    <p>{profile.realName}</p>
                 </>
             ) : (
                 <>
                     <h2>👋 Welcome!</h2>
-                    <p className="real-name">
+                    <p>
                         You are not logged in.
                     </p>
-
-                    <button
-                        className="primary-btn"
-                        onClick={() => navigate("/login")}
-                    >
-                        Login
-                    </button>
+                    <Button to={'/login'} title={'Log in'} />
                 </>
             )}
         </div>
