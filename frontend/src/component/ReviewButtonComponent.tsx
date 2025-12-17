@@ -1,6 +1,7 @@
 import like from "../assets/like.png";
 import {useState} from "react";
 import {addLike, removeLike} from "../endpoints/ReviewLikeEndpoints.ts";
+import style from '../style/Review.module.css'
 
 export interface ReviewButtonProps {
     amountOfLikes: number,
@@ -51,11 +52,12 @@ export default function ReviewButtonComponent({amountOfLikes, reviewId}: ReviewB
     }
 
     return (
-        <div className="review-button">
+        <div className={style.reviewAddLike}>
             <button
+                className={style.reviewAddLikeButton}
                 onClick={handleLike}
                 style={{ backgroundColor: liked ? "deepskyblue" : "white"}}>
-                <img className="icon-size" src={like} alt="Like icom" />{likeCount}</button>
+                <img className={style.reviewAddLikeButtonIcon} src={like} alt="Like icom" />{likeCount}</button>
         </div>
     )
 }

@@ -8,6 +8,8 @@ import type { Game } from "../interfaces/GameTypes.ts";
 import { useParams } from "react-router-dom";
 import { getGamesById } from "../endpoints/GameEndpoints.ts";
 import Button from "../component/ButtonComponent.tsx";
+import gameLogo from '../assets/video-games-controllers.avif'
+import style from '../style/GameDetail.module.css'
 
 export default function GameDetailPage() {
     const { id } = useParams();
@@ -46,21 +48,28 @@ export default function GameDetailPage() {
         <>
             <HeaderComponent />
             <main>
-                <Button to={'/'} title={'Back'} />
-                <h1>{game?.title}</h1>
-                <p>Genre: {game?.genre}</p>
-                <p>PEGI: {game?.pegi}</p>
-                <p>Release Date: {game?.releaseDate}</p>
-                <p>Developed By: {game?.developedBy}</p>
-                <p>
-                    Platforms:{" "}
-                    {game?.platforms?.map((platform) => (
-                        <span key={platform.id}>{platform.name} </span>
-                    )) ?? "Unknown"}
-                </p>
-            {listOfReviews.map(review =>
+                <div className={style.gameDetailContainer}>
+                    <img className={style.gameImage} src={gameLogo} alt="Game logo" />
+                    <div className={style.gameInfo}>
+                        <h1>{game?.title}</h1>
+                        <p>Genre: {game?.genre}</p>
+                        <p>PEGI: {game?.pegi}</p>
+                        <p>Release Date: {game?.releaseDate}</p>
+                        <p>Developed By: {game?.developedBy}</p>
+                        <p>
+                            Platforms:{" "}
+                            {game?.platforms?.map((platform) => (
+                                <span key={platform.id}>{platform.name} </span>
+                            )) ?? "Unknown"}
+                        </p>
+                    </div>
+
+                </div>
+
+                {listOfReviews.map(review =>
                 <ReviewComponent key={review.reviewId} review={review} onDelete={handleDeletedReview}/>)}
-            <CreateReviewComponent gameId="1"/>
+                <CreateReviewComponent gameId="1"/>
+                <Button to={'/'} title={'Back'} />
             </main>
         </>
     )

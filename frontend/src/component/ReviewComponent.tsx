@@ -1,11 +1,10 @@
 import star from "../assets/star.png";
 import deleteIcon from '../assets/delete.png';
 import type { Review } from "../interfaces/ReviewTypes.ts";
-import './../style/GameDetail.css'
 import {useEffect, useState} from "react";
 import ReviewButtonComponent from "./ReviewButtonComponent.tsx";
 import {deleteReview} from "../endpoints/ReviewEndpoints.ts";
-
+import style from '../style/Review.module.css'
 
 export default function ReviewComponent({review, onDelete}: {review: Review; onDelete: (reviewId: number) => void;} ) {
     const [liked, setLiked] = useState(false);
@@ -41,21 +40,23 @@ export default function ReviewComponent({review, onDelete}: {review: Review; onD
     function renderStars(amount: number) {
         const row = [];
         for (let i = 0; i < amount; i++) {
-            row.push(<img key={i} src={star} alt="Star icon" />)
+            row.push(<img className={style.reviewIcon} key={i} src={star} alt="Star icon" />)
         }
         return row;
     }
 
     return (
-        <div className="review-container">
-            <div className="review-header">
-                <div>
-                    <img className="avatar-img" src={review.avatarUrl} alt="Avatar icon" />
-                    <h5>{review.profileUsername}</h5>
+        <div className={style.reviewContainer}>
+            <div className={style.reviewHeader}>
+                <div className={style.reviewHeaderDiv}>
+                    <img className={style.reviewAvatar} src={review.avatarUrl} alt="Avatar icon" />
+                    <h5 className={style.reviewUsername}>{review.profileUsername}</h5>
                 </div>
-                <div>
-                    <span>{review.createdAt}</span>
-                    <img className="icon-size" src={deleteIcon} alt="Delete icon" title="Delete" onClick={handleDeleteReview}/>
+                <div className={style.reviewHeaderDiv}>
+                    <span className={style.reviewCreated}>{review.createdAt}</span>
+                    <button className={style.reviewDeleteButton}>
+                        <img className={style.reviewIcon} src={deleteIcon} alt="Delete icon" title="Delete" onClick={handleDeleteReview}/>
+                    </button>
                 </div>
             </div>
             {renderStars(review.rating)}

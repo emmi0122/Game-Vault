@@ -45,7 +45,7 @@ export default function ProfileComponent() {
                         className={style.avatar}
                     />
                     <h2>{profile.profileName}</h2>
-                    <p>{profile.realName}</p>
+                    <p className={style.realNameText}>{profile.realName}</p>
                 </>
             ) : (
                 <>
