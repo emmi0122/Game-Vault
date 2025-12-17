@@ -8,13 +8,30 @@ export async function getAllGames() :Promise<Game[]> {
         const response = await fetch(`${baseUrl}${mapping}`)
 
         if (!response.ok) {
-
             throw new Error(`HTTP error ${response.status}`)
         }
 
-        const listOfGames :Game[] = await response.json()
+        const listOfGames: Game[] = await response.json()
         return listOfGames
     } catch (error) {
         return [] as Game[]
+    }
+}
+
+export async function getGamesById(gameId: string): Promise<Game | undefined> {
+    try {
+        const response = await fetch(`${baseUrl}${mapping}/${gameId}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error ${response.status}`)
+        }
+
+        const game: Game = await response.json()
+        return game
+    } catch (error) {
+        return undefined
     }
 }
