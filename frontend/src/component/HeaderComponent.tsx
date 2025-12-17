@@ -37,7 +37,6 @@ export default function HeaderComponent() {
                 <span className="link"><Link to={'/create'} >Create account</Link></span>
                 </>
             }
-            <span className="link"><Link to={'/allGames'}>All games</Link></span>
         </nav>
         </header>
     )

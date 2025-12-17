@@ -1,12 +1,25 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './../style/Home.css'
 import { useEffect, useState } from 'react';
 import { getProfile } from '../endpoints/ProfileEndpoints';
 import HeaderComponent from "../component/HeaderComponent.tsx";
+import type { Game } from '../interfaces/GameTypes.ts';
+import { getAllGames } from '../endpoints/GameEndpoints.ts';
 import type { Profile } from "../interfaces/UserTypes.ts";
 
 export default function HomePage() {
     const [profile, setProfile] = useState<Profile | undefined>(undefined);
+
+    const [allGames, setAllGames] = useState<Game[]>([])
+
+    useEffect(() => {
+        const fetchGames = async () => {
+            const foundGames = await getAllGames()
+            setAllGames(foundGames)
+        }
+
+        fetchGames()
+    }, [])
 
     /*useEffect(() =>{
         const stordeUserId = localStorage.getItem("profileId");
@@ -37,6 +50,9 @@ export default function HomePage() {
             <main>
                 <p>Hello: {profile?.profileName}</p>
                 <button onClick={consoleProfile} >print profile</button>
+                <ul>
+                    {allGames.map(game => <li key={game.id}><Link to={`/game/${game.id}`}>{game.title}</Link></li>)}
+                </ul>
             </main>
         </>
     );
