@@ -1,6 +1,6 @@
 import '../style/GameDetail.css';
 import {useState} from "react";
-import type {ReviewDTO} from "../interfaces/ReviewTypers.ts";
+import type {ReviewDTO} from "../interfaces/ReviewTypes.ts";
 import {createReview} from "../endpoints/ReviewEndpoints.ts";
 
 export default function CreateReviewComponent({gameId}: { gameId: string }) {

@@ -2,7 +2,7 @@ package se.yrgo.rest;
 
 import java.util.*;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import se.yrgo.domain.Profile;
@@ -29,15 +29,22 @@ public class ProfileController {
             System.err.println("An error occurred, why?:");
             error.printStackTrace();
             
-            return ResponseEntity.ok(Map.of(
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                     "status", "Major ERROR",
                     "message", "Could not found the profile connected to the user?"));
+        }catch(Exception error){
+            System.err.println("An error occurred, why?:");
+            error.printStackTrace();
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "status", "failed",
+                    "message", "Network error"));
         }
 
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO = ProfileDTO.toDTO(profile); 
 
-        return ResponseEntity.ok(Map.of(
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Map.of(
                 "status", "success",
                 "message", "Profile found",
                 "profile", profileDTO));

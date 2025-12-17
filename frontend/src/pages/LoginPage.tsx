@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './../style/Login.css'
 import { useState } from 'react';
-import type { User } from '../interfaces/Typer';
+import type { User } from '../interfaces/UserTypes';
 import { login } from '../endpoints/UserEndpoints';
 
 export default function LoginPage() {

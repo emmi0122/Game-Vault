@@ -20,3 +20,8 @@ export interface LoginResponse {
   message: string;
   profileId?: number;  // optional if fail
 }
+
+export interface CsrfResponse {
+  token: string;
+  headerName: string;
+}

@@ -1,4 +1,4 @@
-import type { Profile } from "../interfaces/Typer";
+import type { Profile } from "../interfaces/UserTypes";
 
 const baseURL = "http://localhost:8080";
 const mapping = "/profile";
@@ -17,7 +17,7 @@ export async function getProfile(profileId: string): Promise<Profile | undefined
             return data;
         } else {
             console.error("Get profile failed:", data);
-            return data;
+            return undefined;
         }
 
 

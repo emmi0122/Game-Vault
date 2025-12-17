@@ -1,4 +1,4 @@
-import type {Review, ReviewDTO} from "../interfaces/ReviewTypers.ts";
+import type {Review, ReviewDTO} from "../interfaces/ReviewTypes.ts";
 
 const baseUrl = "http://localhost:8081";
 const mapping = "/reviews"

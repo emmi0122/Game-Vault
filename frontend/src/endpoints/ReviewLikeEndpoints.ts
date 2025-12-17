@@ -1,4 +1,4 @@
-import type {Review} from "../interfaces/ReviewTypers.ts";
+import type {Review} from "../interfaces/ReviewTypes.ts";
 
 const baseUrl = "http://localhost:8081";
 const mapping = "/likes"
