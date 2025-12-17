@@ -1,0 +1,16 @@
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 1rem;
+    margin-bottom: 1rem;
+}
+
+.headerNav {
+    display: flex;
+    gap: 15px;
+}
+
+.h1 {
+    margin: 0;
+    padding: 0;
+}

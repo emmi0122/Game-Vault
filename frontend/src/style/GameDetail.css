@@ -1,45 +1,4 @@
-.review-container {
-    background-color: rgba(135, 206, 250, 0.5);
-    border: 1px solid #1a1a1a;
-    border-radius: 20px;
-    margin: 1rem;
-    padding: 0.8rem;
 
-
-    img {
-        width: 15px;
-    }
-
-    p {
-        font-size: small;
-    }
-}
-
-.review-header {
-    display: flex;
-    justify-content: space-between;
-
-    div {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-    }
-
-    h5 {
-        font-size: large;
-        margin: 0;
-    }
-
-    span {
-        font-size: smaller;
-    }
-}
 
 .create-review-container {
 
@@ -72,7 +31,8 @@ button {
     padding-inline: 0.5rem;
 }
 
-.review-button > button > img {
-    width: 12px;
+.icon-size {
+    width: 20px;
+    height: 20px;
     margin-right: 0.3rem;
 }

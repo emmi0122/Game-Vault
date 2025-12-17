@@ -1,0 +1,15 @@
+.gameContainer {
+    border: 2px solid skyblue;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.linkText {
+    color: black;
+    font-size: 16px;
+    text-decoration: none;
+}
+
