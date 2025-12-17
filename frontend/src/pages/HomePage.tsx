@@ -8,9 +8,14 @@ import GameListComponent from '../component/GameListComponent.tsx';
 import GameComponent from '../component/GameComponent.tsx';
 
 export default function HomePage() {
+<<<<<<< HEAD
 
     const [allGames, setAllGames] = useState<Game[]>([])
 
+=======
+    const [allGames, setAllGames] = useState<Game[]>([])
+
+>>>>>>> 0ece7151436105327de940bd52ad269bb87303a7
     useEffect(() => {
         const fetchGames = async () => {
             const foundGames = await getAllGames()
