@@ -1,5 +1,6 @@
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import Button from "./ButtonComponent.tsx";
 
 export default function HeaderComponent() {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -31,10 +32,11 @@ export default function HeaderComponent() {
         <h1>Game Vault</h1>
         <nav>
             { isLoggedIn ?
-                <span className="link" onClick={logUt}><Link to={'/login'} >Log out</Link></span> :
+                <Button to={'/login'} title={'Log out'} onClick={logUt}/>
+                :
                 <>
-                <span className="link"><Link to={'/login'} >Log In</Link></span>
-                <span className="link"><Link to={'/create'} >Create account</Link></span>
+                    <Button to={'/login'} title={'Log in'} />
+                    <Button to={'/create'} title={'Create account'} />
                 </>
             }
         </nav>

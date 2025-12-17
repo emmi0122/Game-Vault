@@ -21,11 +21,8 @@ export default function HomePage() {
     return (
         <>
             <HeaderComponent />
-
             <div className="home-layout">
                 <ProfileComponent/>
-
-
                 <GameListComponent>
                     {allGames.map((game) => {
                        return <GameComponent game={game}></GameComponent>

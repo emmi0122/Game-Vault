@@ -7,6 +7,7 @@ import HeaderComponent from "../component/HeaderComponent.tsx";
 import type { Game } from "../interfaces/GameTypes.ts";
 import { useParams } from "react-router-dom";
 import { getGamesById } from "../endpoints/GameEndpoints.ts";
+import Button from "../component/ButtonComponent.tsx";
 
 export default function GameDetailPage() {
     const { id } = useParams();
@@ -45,6 +46,7 @@ export default function GameDetailPage() {
         <>
             <HeaderComponent />
             <main>
+                <Button to={'/'} title={'Back'} />
                 <h1>{game?.title}</h1>
                 <p>Genre: {game?.genre}</p>
                 <p>PEGI: {game?.pegi}</p>
