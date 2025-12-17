@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Button from "./ButtonComponent.tsx";
+import style from "../style/Header.module.css"
 
 export default function HeaderComponent() {
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -28,9 +29,9 @@ export default function HeaderComponent() {
     }
 
     return (
-        <header>
-        <h1>Game Vault</h1>
-        <nav>
+        <header className={style.headerContainer}>
+        <h1 className={style.h1}>Game Vault</h1>
+        <nav className={style.headerNav}>
             { isLoggedIn ?
                 <Button to={'/login'} title={'Log out'} onClick={logUt}/>
                 :
