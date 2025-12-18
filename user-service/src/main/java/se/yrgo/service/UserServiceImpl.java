@@ -11,25 +11,43 @@ import se.yrgo.data.UserRepository;
 import se.yrgo.domain.*;
 import se.yrgo.exception.*;
 
+/**
+ * Implementation of {@link UserService} that handles user persistence
+ * and authentication logic.
+ */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private UserRepository ur;
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Creates a new {@code UserServiceImpl} with the required dependencies.
+     *
+     * @param ur              the repository used for user persistence
+     * @param passwordEncoder encoder used to hash and verify passwords
+     */
     public UserServiceImpl(UserRepository ur, PasswordEncoder passwordEncoder) {
         this.ur = ur;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Encodes the user's password, sets metadata, associates the profile,
+     * and persists the user in the database.
+     */
+    @Override
     @Transactional
     public User registerUserWithProfile(User user, Profile profile) {
-        // validate user
-        // if user excist
+        // validate user (in further implementation)
+
         if (ur.findUserByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
-        
-        // validate profile 
+
+        // validate profile (in further implementation)
+
         String encoderPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encoderPassword);
         user.setCreatedAt(LocalDateTime.now());
@@ -39,6 +57,10 @@ public class UserServiceImpl implements UserService{
         return ur.save(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User findUserByEmail(String email) throws UserNotFoundException {
         Optional<User> user = ur.findUserByEmail(email);
         if (user.isEmpty()) {
@@ -48,6 +70,11 @@ public class UserServiceImpl implements UserService{
         return user.get();
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Verifies that the provided password matches the stored encoded password.
+     */
     @Override
     public void validatePassword(User foundUser, User loginUser) {
         if (foundUser == null || loginUser == null || loginUser.getPassword() == null) {
