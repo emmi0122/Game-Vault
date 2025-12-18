@@ -7,13 +7,10 @@ import se.yrgo.data.ReviewLikesRepository;
 import se.yrgo.data.ReviewRepository;
 import se.yrgo.domain.Review;
 import se.yrgo.domain.ReviewLikes;
-import se.yrgo.dto.ProfileDTO;
 import se.yrgo.dto.ProfileResponseDTO;
-import se.yrgo.exception.ProfileNotFound;
 import se.yrgo.exception.ReviewNotFoundException;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,6 +29,12 @@ public class ReviewLikesServiceImpl implements ReviewLikesService {
         this.restClient = restClient;
     }
 
+    /**
+     * Connects reviewLike to review.
+     * Throws error if no review is found.
+     * @param reviewId, id of review that is liked
+     * @param profileId, profile that likes the review.
+     */
     public void addLike(Long reviewId, Long profileId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
         ReviewLikes like = new ReviewLikes();
@@ -41,6 +44,13 @@ public class ReviewLikesServiceImpl implements ReviewLikesService {
         reviewLikesRepository.save(like);
     }
 
+    /**
+     * Deletes a like from a review.
+     * Throws error if no review is found.
+     * @param reviewId, the review to be deleted.
+     * @param profileId, which profile that is connected.
+     * @return a boolean if the review is deleted or not.
+     */
     public boolean deleteLike(Long reviewId, Long profileId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
         Optional<ReviewLikes> likeOpt = review.getLikes().stream()
@@ -55,6 +65,11 @@ public class ReviewLikesServiceImpl implements ReviewLikesService {
         return true;
     }
 
+    /**
+     * Gets the profile from user-service.
+     * @param id, the id of the profile to be found
+     * @return a ProfileResponseDTO with message, status and profile.
+     */
     public ProfileResponseDTO findProfile(Long id) {
         return restClient.get()
                 .uri(profileServiceUrl + "/getProfile?profileId=" + id)

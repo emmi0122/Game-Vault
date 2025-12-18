@@ -1,7 +1,6 @@
 package se.yrgo.service.review;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import se.yrgo.data.ReviewRepository;
@@ -13,10 +12,8 @@ import se.yrgo.dto.ReviewResponseDTO;
 import se.yrgo.exception.ProfileNotFound;
 import se.yrgo.exception.ReviewCreationException;
 import se.yrgo.exception.ReviewNotFoundException;
-
 import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
