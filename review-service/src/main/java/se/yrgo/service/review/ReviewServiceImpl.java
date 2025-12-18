@@ -31,6 +31,11 @@ public class ReviewServiceImpl implements ReviewService {
         this.restClient = restClient;
     }
 
+    /**
+     * Creates a review, makes sure that the profile is available in the user-service microservice before creating.
+     * Will throw error is nor profile is found.
+     * @param review, the review to be created.
+     */
     @Override
     public void createReview(Review review) {
         try {
@@ -47,6 +52,13 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
+    /**
+     * To update a review.
+     * Will throw error if no review is found.
+     * TODO: Needs to be implemented and looked over once more. Need to make sure this actually work.
+     * @param id, the id of the review to be updated
+     * @param oldReview, the one to be updated.
+     */
     @Override
     public void updateReview(Long id, Review oldReview) {
         Review existing = reviewRepo.findById(id).orElseThrow(() -> new ReviewNotFoundException("Couldn't find review"));
@@ -55,12 +67,23 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepo.save(existing);
     }
 
+    /**
+     * Deletes a review with the reviewId from the database.
+     * @param reviewId, the reviewId of the review to be deleted.
+     */
     @Override
     public void deleteReview(Long reviewId) {
         Review foundReview = reviewRepo.findById(reviewId).orElseThrow(() -> (new ReviewNotFoundException("No review found" + reviewId)));
         reviewRepo.delete(foundReview);
     }
 
+    /**
+     *Find all reviews and their likes for a certain game.
+     * Will throw error if no profile is found or response.
+     * TODO: Need to implement restClient to check if game exists.
+     * @param gameId the game to find all reviews.
+     * @return returns all reviews for a certain game.
+     */
     @Override
     public List<ReviewResponseDTO> findAllReviewsForGame(Long gameId) {
         List<Review> reviews = reviewRepo.findAllReviewsForGame(gameId);
@@ -93,6 +116,13 @@ public class ReviewServiceImpl implements ReviewService {
         }).toList();
     }
 
+    /**
+     * Finds all reviews for a certain profile.
+     * Throws error if no profile is found.
+     * TODO: Finish this method, right now it's not fully functional.
+     * @param profileId, the profile to find.
+     * @return All reviews for profile.
+     */
     @Override
     public List<Review> findAllReviewsForProfile(Long profileId) {
         ProfileResponseDTO response = findProfile(profileId);
