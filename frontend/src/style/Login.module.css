@@ -1,0 +1,130 @@
+.logInButton {
+    border: 2px solid skyblue;
+    display: block;
+    width: 50%;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    font-size: 18px;
+    padding: 12px;
+}
+
+.reviewButton {
+    border: 2px solid skyblue;
+    display: block;
+    border-radius: 5px;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    font-size: 18px;
+    padding-inline: 1rem;
+    padding-block: 0.3rem;
+}
+
+.reviewButton:hover {
+    background-color: skyblue;
+}
+
+.logInButton:hover {
+    background-color: skyblue;
+}
+
+.cancelButton {
+    border: 2px solid #f44336;
+    display: block;
+    width: 50%;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    font-size: 18px;
+    padding: 12px;
+}
+
+.cancelButton:hover {
+    background-color: #f44336;
+}
+
+.reviewForm {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.pws {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.pswAnchor:hover {
+    text-decoration: underline;
+}
+
+
+.pswAnchor {
+    color: skyblue;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.logInInout {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.logInInout:focus {
+    border-color: skyblue;
+    outline: none;
+}
+
+.loginH2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.loginLabel {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 18px;
+}
+
+.avatarContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.avatarImage{
+    width: 120px;
+    height: 120px;
+    border-radius: 15px; /* fyrkant med rundade hörn */
+    border: 2px solid skyblue;
+    object-fit: cover;
+    transition: 0.3s;
+}
+
+.avatarImage:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}

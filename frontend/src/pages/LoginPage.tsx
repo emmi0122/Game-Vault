@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import './../style/Login.css'
 import { useState } from 'react';
 import type { User } from '../interfaces/UserTypes';
 import { login } from '../endpoints/UserEndpoints';
+import styles from '../style/Login.module.css'
 
 export default function LoginPage() {
     const [email, setEmail] = useState<string>("")
@@ -52,30 +52,30 @@ export default function LoginPage() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <div className="container">
+            <form className={styles.loginForm} onSubmit={handleSubmit}>
+                <div className={styles.loginContainer}>
                     <h2>Log In</h2>
                     <label htmlFor="Email">Email</label>
-                    <input type="email" placeholder="Enter Email" name="email" value={email} onChange={e => setEmail(e.target.value)} required />
+                    <input className={styles.logInInout} type="email" placeholder="Enter Email" name="email" value={email} onChange={e => setEmail(e.target.value)} required />
 
                     <label htmlFor="psw">Password</label>
-                    <input type="password" placeholder="Enter Password" name="psw" value={password} onChange={e => setPassword(e.target.value)} required />
+                    <input className={styles.logInInout} type="password" placeholder="Enter Password" name="psw" value={password} onChange={e => setPassword(e.target.value)} required />
 
-                    <button type="submit">Sign In</button>
-                    <p>{message}</p>
+                    <button className={styles.logInButton} type="submit">Sign In</button>
+                    { message ? <p>{message}</p> : ""}
                 </div>
 
-                <div className="container">
+                <div className={styles.loginContainer}>
                     <button
                         type="button"
-                        className="cancelbtn"
+                        className={styles.cancelButton}
                         onClick={toHomePage}
                     >
                         Cancel
                     </button>
 
-                    <span className="psw">Forgot <a href="#">password?</a></span>
-                    <span className="psw">Do not have an account? <Link to={'/Create'} >Create account</Link></span>
+                    <span className={styles.pws}>Forgot <a className={styles.pswAnchor} href="#">password?</a></span>
+                    <span className={styles.pws}>Do not have an account? <Link className={styles.pswAnchor} to={'/Create'} >Create account</Link></span>
                 </div>
             </form>
         </>

@@ -13,7 +13,6 @@ export default function ReviewButtonComponent({amountOfLikes, reviewId}: ReviewB
     const [likeCount, setLikeCount] = useState(amountOfLikes);
     const [loading, setLoading] = useState(false);
 
-
     async function handleLike() {
         const profileIdStr = localStorage.getItem("profileId");
         if (!profileIdStr || loading) return;

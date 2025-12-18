@@ -11,6 +11,7 @@ export default function ReviewComponent({review, onDelete}: {review: Review; onD
     const [likeCount, setLikeCount] = useState(review.likes.length);
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log(review)
     useEffect(() => {
         const profileIdStr = localStorage.getItem("profileId");
         if (!profileIdStr) return;
