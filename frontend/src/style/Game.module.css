@@ -1,7 +1,8 @@
 .gameContainer {
     border: 2px solid skyblue;
     border-radius: 5px;
-    padding: 1rem;
+    padding-block: 1rem;
+    padding-inline: 3rem;
     margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
@@ -9,7 +10,11 @@
 
 .linkText {
     color: black;
-    font-size: 16px;
+    font-size: larger;
     text-decoration: none;
+}
+
+.linkText:hover {
+    text-decoration: underline;
 }
 

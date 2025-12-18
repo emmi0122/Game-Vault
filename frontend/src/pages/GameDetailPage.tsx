@@ -7,7 +7,7 @@ import HeaderComponent from "../component/HeaderComponent.tsx";
 import type { Game } from "../interfaces/GameTypes.ts";
 import { useParams } from "react-router-dom";
 import { getGamesById } from "../endpoints/GameEndpoints.ts";
-import Button from "../component/ButtonComponent.tsx";
+import ButtonLink from "../component/ButtonComponent.tsx";
 import gameLogo from '../assets/video-games-controllers.avif'
 import style from '../style/GameDetail.module.css'
 
@@ -15,7 +15,6 @@ export default function GameDetailPage() {
     const { id } = useParams();
     const [game, setGame] = useState<Game>();
     const [listOfReviews, setListOfReviews] = useState<Review[]>([]);
-
     console.log(game)
 
     useEffect(() => {
@@ -33,7 +32,7 @@ export default function GameDetailPage() {
 
     useEffect(() => {
         const review = async () => {
-            const foundReviews = await getReviewList("1");
+            const foundReviews = await getReviewList(id);
             setListOfReviews(foundReviews)
         }
 
@@ -68,8 +67,8 @@ export default function GameDetailPage() {
 
                 {listOfReviews.map(review =>
                 <ReviewComponent key={review.reviewId} review={review} onDelete={handleDeletedReview}/>)}
-                <CreateReviewComponent gameId="1"/>
-                <Button to={'/'} title={'Back'} />
+                <CreateReviewComponent gameId={id}/>
+                <ButtonLink to={'/'} title={'Back'} />
             </main>
         </>
     )

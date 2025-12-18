@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import './../style/SignUp.css';
 import type { RegistrationRequestDTO } from "../interfaces/UserTypes";
 import { registerUser } from "../endpoints/UserEndpoints";
+import styles from '../style/Login.module.css'
 
 export default function CreateAccount() {
     const [email, setEmail] = useState("");
@@ -89,12 +89,13 @@ export default function CreateAccount() {
 
 
     return (<>
-        <form onSubmit={handleSubmit}>
-            <div className="container">
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
+            <div className={styles.loginContainer}>
                 <h2>Sign Up</h2>
 
                 <label htmlFor="email"><b>Email</b></label>
                 <input
+                    className={styles.logInInout}
                     type="email"
                     placeholder="Enter Email"
                     name="email"
@@ -105,6 +106,7 @@ export default function CreateAccount() {
                 
                 <label htmlFor="real-name"><b>Your real name</b></label>
                 <input
+                    className={styles.logInInout}
                     type="text"
                     placeholder="Enter Name"
                     name="real-name"
@@ -115,6 +117,7 @@ export default function CreateAccount() {
 
                 <label htmlFor="psw"><b>Password</b></label>
                 <input
+                    className={styles.logInInout}
                     type="password"
                     placeholder="Enter Password"
                     name="psw"
@@ -125,6 +128,7 @@ export default function CreateAccount() {
 
                 <label htmlFor="psw-repeat"><b>Confirm Password</b></label>
                 <input
+                    className={styles.logInInout}
                     type="password"
                     placeholder="Confirm Password"
                     name="psw-repeat"
@@ -133,14 +137,15 @@ export default function CreateAccount() {
                     required
                 />
 
-                <div className="avatar-container">
+                <div className={styles.avatarContainer}>
                     <h2>Your Avatar</h2>
-                    <img id="avatar-img" src={avatar} alt="Avatar" />
-                    <button type="button" onClick={() => setAvatar(generateAvatar())}>Generate New Avatar</button>
+                    <img className={styles.avatarImage} id="avatar-img" src={avatar} alt="Avatar" />
+                    <button className={styles.logInButton} type="button" onClick={() => setAvatar(generateAvatar())}>Generate New Avatar</button>
                 </div>
 
                 <label htmlFor="username"><b>Username</b></label>
                 <input
+                    className={styles.logInInout}
                     type="text"
                     placeholder="Enter Username"
                     name="username"
@@ -150,19 +155,19 @@ export default function CreateAccount() {
                 />
 
                 <p>{message}</p>
-                <button type="submit">Sign Up</button>
+                <button className={styles.logInButton} type="submit">Sign Up</button>
             </div>
 
-            <div className="container">
+            <div className={styles.loginContainer}>
                 <button
                     type="button"
-                    className="cancelbtn"
+                    className={styles.cancelButton}
                     onClick={toHomePage}
                 >
                     Cancel
                 </button>
 
-                <span className="psw">Already have an account? <Link to={'/login'} >Log in</Link></span>
+                <span className={styles.pws}>Already have an account? <Link className={styles.pswAnchor} to={'/login'} >Log in</Link></span>
             </div>
         </form>
     </>);

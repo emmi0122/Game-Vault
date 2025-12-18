@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import Button from "./ButtonComponent.tsx";
+import ButtonLink from "./ButtonComponent.tsx";
 import style from "../style/Header.module.css"
 
 export default function HeaderComponent() {
@@ -33,11 +33,11 @@ export default function HeaderComponent() {
         <h1 className={style.h1}>Game Vault</h1>
         <nav className={style.headerNav}>
             { isLoggedIn ?
-                <Button to={'/login'} title={'Log out'} onClick={logUt}/>
+                <ButtonLink to={'/login'} title={'Log out'} onClick={logUt}/>
                 :
                 <>
-                    <Button to={'/login'} title={'Log in'} />
-                    <Button to={'/create'} title={'Create account'} />
+                    <ButtonLink to={'/login'} title={'Log in'} />
+                    <ButtonLink to={'/create'} title={'Create account'} />
                 </>
             }
         </nav>
