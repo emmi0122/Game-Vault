@@ -1,0 +1,16 @@
+.link {
+    border: 2px solid skyblue;
+    border-radius: 8px;
+    padding: 0.3rem;
+    align-content: center;
+}
+
+.link:hover {
+    background-color: skyblue;
+}
+
+.linkText {
+    color: black;
+    font-size: 16px;
+    text-decoration: none;
+}

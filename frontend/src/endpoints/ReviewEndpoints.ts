@@ -3,7 +3,7 @@ import type {Review, ReviewDTO} from "../interfaces/ReviewTypes.ts";
 const baseUrl = "http://localhost:8081";
 const mapping = "/reviews"
 
-export async function getReviewList(gameId: string): Promise<Review[]> {
+export async function getReviewList(gameId: string | undefined): Promise<Review[]> {
     try {
         const response = await fetch(`${baseUrl}${mapping}/all-reviews?gameId=${gameId}`, {
             method: "Get",

@@ -1,0 +1,14 @@
+.gameImage {
+    width: 50%;
+    border-radius: 10px;
+    align-self: center;
+}
+
+.gameDetailContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.gameInfo {
+    align-self: center;
+}

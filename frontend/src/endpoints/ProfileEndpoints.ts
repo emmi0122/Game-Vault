@@ -14,7 +14,7 @@ export async function getProfile(profileId: string): Promise<Profile | undefined
 
         if (response.ok) {
             console.log("Get profile success:", data);
-            return data;
+            return data.profile;
         } else {
             console.error("Get profile failed:", data);
             return undefined;

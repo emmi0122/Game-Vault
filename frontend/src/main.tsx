@@ -5,8 +5,7 @@ import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import HomePage from './pages/HomePage';
 import GameDetailPage from "./pages/GameDetailPage.tsx";
-// import './index.css'
-// import App from './App.tsx'
+import './index.css'
 
 const router = createBrowserRouter([
   {

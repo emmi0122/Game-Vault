@@ -57,8 +57,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long reviewId) {
-            Review foundReview = reviewRepo.findById(reviewId).orElseThrow(() -> (new ReviewNotFoundException("No review found" + reviewId)));
-            reviewRepo.delete(foundReview);
+        Review foundReview = reviewRepo.findById(reviewId).orElseThrow(() -> (new ReviewNotFoundException("No review found" + reviewId)));
+        reviewRepo.delete(foundReview);
     }
 
     @Override
