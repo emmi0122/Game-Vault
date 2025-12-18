@@ -12,7 +12,7 @@ import gameLogo from '../assets/video-games-controllers.avif'
 import style from '../style/GameDetail.module.css'
 
 export default function GameDetailPage() {
-    const { id } = useParams();
+    const { id } = useParams<string>();
     const [game, setGame] = useState<Game>();
     const [listOfReviews, setListOfReviews] = useState<Review[]>([]);
     console.log(game)
@@ -31,13 +31,14 @@ export default function GameDetailPage() {
     }, [id])
 
     useEffect(() => {
+        if (!id) return;
         const review = async () => {
             const foundReviews = await getReviewList(id);
             setListOfReviews(foundReviews)
         }
 
         review()
-    }, []);
+    }, [id]);
 
     function handleDeletedReview(reviewId: number) {
         setListOfReviews(prev => prev.filter(r => r.reviewId !== reviewId));
@@ -65,8 +66,8 @@ export default function GameDetailPage() {
 
                 </div>
 
-                {listOfReviews.map(review =>
-                <ReviewComponent key={review.reviewId} review={review} onDelete={handleDeletedReview}/>)}
+                {listOfReviews ? listOfReviews.map(review =>
+                <ReviewComponent key={review.reviewId} review={review} onDelete={handleDeletedReview}/>) : ""}
                 <CreateReviewComponent gameId={id}/>
                 <ButtonLink to={'/'} title={'Back'} />
             </main>
